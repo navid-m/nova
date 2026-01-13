@@ -318,6 +318,16 @@ ulong getKey(GameWindow* gw, int keyCode) => glfwGetKey(gw, keyCode);
  */
 ulong getMouseButton(GameWindow* gw, int mbCode) => glfwGetMouseButton(gw, mbCode);
 
+/** 
+ * Key callback.
+ *
+ * Params:
+ *   window = The game engine window 
+ *   key = The key
+ *   scancode = The scan code
+ *   action = The action
+ *   mods = The modifiers
+ */
 extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) nothrow
 {
     try
@@ -346,6 +356,15 @@ extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int actio
     }
 }
 
+/** 
+ * Mouse button callback function.
+ *
+ * Params:
+ *   window = The game engine window.
+ *   button = The button
+ *   action = The action
+ *   mods = The modifiers
+ */
 extern (C) void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) nothrow
 {
     try
