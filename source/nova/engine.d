@@ -274,12 +274,13 @@ extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int actio
     try
     {
         Nova* engine = cast(Nova*) glfwGetWindowUserPointer(window);
-        if (key >= 0 && key < 512)
+        if (engine && key >= 0 && key < 512)
         {
             if (action == GLFW_PRESS)
             {
+                if (!engine.input.keys[key])
+                    engine.input.keysPressed[key] = true;
                 engine.input.keys[key] = true;
-                engine.input.keysPressed[key] = true;
             }
             else if (action == GLFW_RELEASE)
             {
@@ -298,12 +299,13 @@ extern (C) void mouseButtonCallback(GLFWwindow* window, int button, int action, 
     try
     {
         Nova* engine = cast(Nova*) glfwGetWindowUserPointer(window);
-        if (button >= 0 && button < 8)
+        if (engine && button >= 0 && button < 8)
         {
             if (action == GLFW_PRESS)
             {
+                if (!engine.input.mouseButtons[button])
+                    engine.input.mousePressed[button] = true;
                 engine.input.mouseButtons[button] = true;
-                engine.input.mousePressed[button] = true;
             }
             else if (action == GLFW_RELEASE)
             {

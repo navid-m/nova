@@ -2,6 +2,8 @@ module nova;
 
 public import nova.engine;
 import std.math : abs;
+import bindbc.glfw;
+import bindbc.opengl;
 
 unittest
 {
@@ -36,7 +38,48 @@ unittest
         engine.addSprite(frameObj, texture, frame);
     }
 
-    engine.run();
+    while (engine.running && !glfwWindowShouldClose(engine.window))
+    {
+        double currentTime = glfwGetTime();
+        float deltaTime = cast(float)(currentTime - engine.lastTime);
+        engine.lastTime = currentTime;
+
+        glfwPollEvents();
+        engine.input.update();
+
+        if (engine.input.isKeyPressed(Key.Escape))
+            engine.running = false;
+
+        if (engine.input.isMousePressed(Mouse.Left))
+        {
+            Vec2 worldPos = engine.screenToWorld(engine.input.mousePos);
+            auto newBall = engine.createGameObject(worldPos, Vec2(0.1f, 0.1f));
+            newBall.color = Color(0, 0, 1, 1);
+            engine.addRigidBody(newBall, 0.3f);
+            engine.addCollider(newBall, Collider.Type.Circle, Vec2(0.05f, 0.05f));
+        }
+
+        engine.physics.update(deltaTime);
+
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        foreach (obj; engine.gameObjects)
+        {
+            if (obj.active)
+            {
+                if (obj.sprite)
+                    engine.renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
+                else if (obj.collider && obj.collider.type == Collider.Type.Circle)
+                    engine.renderer.drawCircle(obj.transform, obj.color);
+                else
+                    engine.renderer.drawRect(obj.transform, obj.color);
+            }
+        }
+
+        glfwSwapBuffers(engine.window);
+    }
+
     engine.cleanup();
 }
 
