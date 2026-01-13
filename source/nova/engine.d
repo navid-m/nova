@@ -343,6 +343,20 @@ void getCursorPosition(GameWindow* window, double* x, double* y)
 }
 
 /** 
+ * Set background to some color.
+ *
+ * Params:
+ *   r = Red
+ *   b = Blue
+ *   g = Green
+ *   a = Alpha
+ */
+void clearColor(float r, float b, float g, float a)
+{
+    glClearColor(r, g, b, a);
+}
+
+/** 
  * Key callback.
  *
  * Params:
