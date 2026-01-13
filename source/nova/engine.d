@@ -725,7 +725,6 @@ struct Renderer
                 Transform t;
                 t.position = p.position;
                 t.scale = Vec2(p.size, p.size);
-                // Simple rect drawing for now
                 drawRect(t, p.color);
             }
         }
