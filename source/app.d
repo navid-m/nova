@@ -2,7 +2,7 @@ import bindbc.glfw;
 import bindbc.opengl;
 import std.stdio;
 
-struct GameEngine
+struct Nova
 {
     GLFWwindow* window;
     bool running;
@@ -58,7 +58,7 @@ struct GameEngine
 
 void main()
 {
-    GameEngine engine;
+    Nova engine;
     engine.initialize("Example game");
     engine.run();
     engine.cleanup();
