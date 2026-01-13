@@ -3,6 +3,7 @@ import bindbc.opengl;
 import std.stdio;
 import std.math;
 import std.algorithm;
+import std.string;
 
 /** 
  * Some two dimensional vector. 
@@ -18,6 +19,32 @@ struct Vec2
 struct Color
 {
     float r, g, b, a;
+}
+
+/** 
+ * A texture resource.
+ */
+struct Texture
+{
+    uint id;
+    int width, height;
+}
+
+/** 
+ * A sprite frame from a spritesheet.
+ */
+struct SpriteFrame
+{
+    float x, y, width, height;
+}
+
+/** 
+ * A sprite component for rendering textures.
+ */
+struct Sprite
+{
+    Texture* texture;
+    SpriteFrame frame = SpriteFrame(0, 0, 1, 1);
 }
 
 /** 
@@ -64,6 +91,7 @@ struct GameObject
     Transform transform;
     RigidBody* rigidbody;
     Collider* collider;
+    Sprite* sprite;
     Color color = Color(1, 1, 1, 1);
     bool active = true;
 }
@@ -75,7 +103,8 @@ struct GameObject
  */
 struct Renderer
 {
-    uint shaderProgram, rectVAO, rectVBO, circleVAO, circleVBO;
+    uint shaderProgram, spriteShader, rectVAO, rectVBO, circleVAO, circleVBO,
+        spriteVAO, spriteVBO;
 
     /** 
      * Initialize the renderer, this must be called prior to the usage of the renderer
@@ -99,6 +128,27 @@ struct Renderer
                 FragColor = color;
             }`;
 
+        const char* spriteVertexShader = `
+            #version 330 core
+            layout (location = 0) in vec2 aPos;
+            layout (location = 1) in vec2 aTexCoord;
+            uniform mat4 transform;
+            out vec2 TexCoord;
+            void main() {
+                gl_Position = transform * vec4(aPos, 0.0, 1.0);
+                TexCoord = aTexCoord;
+            }`;
+
+        const char* spriteFragmentShader = `
+            #version 330 core
+            in vec2 TexCoord;
+            out vec4 FragColor;
+            uniform sampler2D texture1;
+            uniform vec4 color;
+            void main() {
+                FragColor = texture(texture1, TexCoord) * color;
+            }`;
+
         uint vs = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vs, 1, &vertexShader, null);
         glCompileShader(vs);
@@ -112,8 +162,23 @@ struct Renderer
         glAttachShader(shaderProgram, fs);
         glLinkProgram(shaderProgram);
 
+        uint svs = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(svs, 1, &spriteVertexShader, null);
+        glCompileShader(svs);
+
+        uint sfs = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(sfs, 1, &spriteFragmentShader, null);
+        glCompileShader(sfs);
+
+        spriteShader = glCreateProgram();
+        glAttachShader(spriteShader, svs);
+        glAttachShader(spriteShader, sfs);
+        glLinkProgram(spriteShader);
+
         glDeleteShader(vs);
         glDeleteShader(fs);
+        glDeleteShader(svs);
+        glDeleteShader(sfs);
 
         float[] vertices = [
             -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f
@@ -126,6 +191,23 @@ struct Renderer
         glBufferData(GL_ARRAY_BUFFER, vertices.length * float.sizeof, vertices.ptr, GL_STATIC_DRAW);
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * float.sizeof, cast(void*) 0);
         glEnableVertexAttribArray(0);
+
+        float[] spriteVertices = [
+            -0.5f, -0.5f, 0.0f, 1.0f, 0.5f, -0.5f, 1.0f, 1.0f, 0.5f, 0.5f,
+            1.0f, 0.0f, -0.5f, 0.5f, 0.0f, 0.0f
+        ];
+
+        glGenVertexArrays(1, &spriteVAO);
+        glGenBuffers(1, &spriteVBO);
+        glBindVertexArray(spriteVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, spriteVBO);
+        glBufferData(GL_ARRAY_BUFFER, spriteVertices.length * float.sizeof,
+                spriteVertices.ptr, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * float.sizeof, cast(void*) 0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * float.sizeof,
+                cast(void*)(2 * float.sizeof));
+        glEnableVertexAttribArray(1);
 
         float[] circleVertices;
         int segments = 32;
@@ -190,6 +272,45 @@ struct Renderer
                 GL_FALSE, matrix.ptr);
         glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
         glBindVertexArray(rectVAO);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    }
+
+    /** 
+     * Draw a sprite with optional spritesheet frame.
+     *
+     * Params:
+     *   t = The transform
+     *   sprite = The sprite to render
+     *   c = The color tint
+     */
+    void drawSprite(Transform t, Sprite sprite, Color c)
+    {
+        if (!sprite.texture)
+            return;
+
+        glUseProgram(spriteShader);
+        glBindTexture(GL_TEXTURE_2D, sprite.texture.id);
+
+        float[16] matrix = [
+            t.scale.x, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0, t.position.x,
+            t.position.y, 0, 1
+        ];
+
+        float[] vertices = [
+            -0.5f, -0.5f, sprite.frame.x,
+            sprite.frame.y + sprite.frame.height, 0.5f, -0.5f,
+            sprite.frame.x + sprite.frame.width,
+            sprite.frame.y + sprite.frame.height, 0.5f, 0.5f,
+            sprite.frame.x + sprite.frame.width, sprite.frame.y, -0.5f, 0.5f,
+            sprite.frame.x, sprite.frame.y
+        ];
+
+        glBindBuffer(GL_ARRAY_BUFFER, spriteVBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.length * float.sizeof, vertices.ptr);
+
+        glUniformMatrix4fv(glGetUniformLocation(spriteShader, "transform"), 1, GL_FALSE, matrix.ptr);
+        glUniform4f(glGetUniformLocation(spriteShader, "color"), c.r, c.g, c.b, c.a);
+        glBindVertexArray(spriteVAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
 }
@@ -339,7 +460,99 @@ struct Nova
     Renderer renderer;
     Physics physics;
     GameObject*[] gameObjects;
+    Texture*[] textures;
     double lastTime;
+
+    /** 
+     * Load a texture from a simple PPM file.
+     *
+     * Params:
+     *   filename = Path to the PPM file
+     *
+     * Returns: Pointer to the loaded texture
+     */
+    Texture* loadTexture(string filename)
+    {
+        import std.file : readText;
+        import std.conv : to;
+        import std.array : split;
+        import std.string : strip;
+
+        try
+        {
+            string content = readText(filename);
+            string[] lines = content.split('\n');
+
+            if (lines.length < 4 || lines[0].strip != "P3")
+                return null;
+
+            int lineIdx = 1;
+            while (lineIdx < lines.length && lines[lineIdx].strip.length == 0)
+                lineIdx++;
+
+            string[] dims = lines[lineIdx].strip.split(' ');
+            if (dims.length < 2)
+                return null;
+
+            int width = dims[0].to!int;
+            int height = dims[1].to!int;
+
+            lineIdx++;
+
+            while (lineIdx < lines.length && lines[lineIdx].strip.length == 0)
+                lineIdx++;
+
+            lineIdx++;
+
+            ubyte[] pixels;
+            for (int i = lineIdx; i < lines.length; i++)
+            {
+                string[] rgb = lines[i].strip.split(' ');
+                foreach (val; rgb)
+                {
+                    if (val.length > 0)
+                        pixels ~= val.to!ubyte;
+                }
+            }
+
+            Texture* tex = new Texture();
+            tex.width = width;
+            tex.height = height;
+
+            glGenTextures(1, &tex.id);
+            glBindTexture(GL_TEXTURE_2D, tex.id);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                    GL_UNSIGNED_BYTE, pixels.ptr);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+            textures ~= tex;
+            return tex;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    /** 
+     * Create a spritesheet frame.
+     *
+     * Params:
+     *   x = X position in pixels
+     *   y = Y position in pixels  
+     *   width = Frame width in pixels
+     *   height = Frame height in pixels
+     *   texWidth = Total texture width
+     *   texHeight = Total texture height
+     *
+     * Returns: SpriteFrame with UV coordinates
+     */
+    SpriteFrame createFrame(int x, int y, int width, int height, int texWidth, int texHeight)
+    {
+        return SpriteFrame(cast(float) x / texWidth, cast(float) y / texHeight,
+                cast(float) width / texWidth, cast(float) height / texHeight);
+    }
 
     /** 
      * Initialize the game engine.
@@ -434,6 +647,21 @@ struct Nova
     }
 
     /** 
+     * Add a sprite to a game object.
+     *
+     * Params:
+     *   obj = The game object
+     *   texture = The texture to use
+     *   frame = Optional sprite frame (defaults to full texture)
+     */
+    void addSprite(GameObject* obj, Texture* texture, SpriteFrame frame = SpriteFrame(0, 0, 1, 1))
+    {
+        obj.sprite = new Sprite();
+        obj.sprite.texture = texture;
+        obj.sprite.frame = frame;
+    }
+
+    /** 
      * Run the game.
      */
     void run()
@@ -455,7 +683,9 @@ struct Nova
             {
                 if (obj.active)
                 {
-                    if (obj.collider && obj.collider.type == Collider.Type.Circle)
+                    if (obj.sprite)
+                        renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
+                    else if (obj.collider && obj.collider.type == Collider.Type.Circle)
                         renderer.drawCircle(obj.transform, obj.color);
                     else
                         renderer.drawRect(obj.transform, obj.color);
@@ -481,20 +711,33 @@ void main()
     Nova engine;
     engine.initialize("Nova Game Engine");
 
+    auto texture = engine.loadTexture("test_sprite.ppm");
     auto ground = engine.createGameObject(Vec2(0, -0.5f), Vec2(1.8f, 0.2f));
+
     ground.color = Color(0.5f, 0.5f, 0.5f, 1);
     engine.addRigidBody(ground, 1, true);
     engine.addCollider(ground, Collider.Type.Rectangle, Vec2(1.8f, 0.2f));
 
     auto ball1 = engine.createGameObject(Vec2(-0.3f, 0.8f), Vec2(0.2f, 0.2f));
+
     ball1.color = Color(1, 0, 0, 1);
     engine.addRigidBody(ball1, 1);
     engine.addCollider(ball1, Collider.Type.Circle, Vec2(0.1f, 0.1f));
 
     auto ball2 = engine.createGameObject(Vec2(0.3f, 0.6f), Vec2(0.15f, 0.15f));
+
     ball2.color = Color(0, 1, 0, 1);
     engine.addRigidBody(ball2, 0.5f);
     engine.addCollider(ball2, Collider.Type.Circle, Vec2(0.075f, 0.075f));
+
+    if (texture)
+    {
+        auto spriteObj = engine.createGameObject(Vec2(-0.6f, 0.2f), Vec2(0.3f, 0.3f));
+        engine.addSprite(spriteObj, texture);
+        auto frameObj = engine.createGameObject(Vec2(0.6f, 0.2f), Vec2(0.2f, 0.2f));
+        auto frame = engine.createFrame(0, 0, 2, 2, 4, 4);
+        engine.addSprite(frameObj, texture, frame);
+    }
 
     engine.run();
     engine.cleanup();
