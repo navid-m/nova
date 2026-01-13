@@ -14,3 +14,4 @@ nova-test-*
 *.o
 *.obj
 *.lst
+libnova.a
