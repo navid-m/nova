@@ -47,10 +47,10 @@ unittest
 
         pollEvents();
 
-        if (getKey(engine.window, Key.Escape) == GLFW_PRESS)
+        if (getKey(engine.window, Key.Escape) == KeyEvent.Press)
             engine.running = false;
 
-        if (getMouseButton(engine.window, Mouse.Left) == GLFW_PRESS)
+        if (getMouseButton(engine.window, Mouse.Left) == KeyEvent.Press)
         {
             double x, y;
             glfwGetCursorPos(engine.window, &x, &y);
