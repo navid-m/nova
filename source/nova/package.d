@@ -79,7 +79,7 @@ unittest
             }
         }
 
-        glfwSwapBuffers(engine.window);
+        swapBuffers(engine.window);
     }
 
     engine.cleanup();

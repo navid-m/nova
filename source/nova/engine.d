@@ -378,6 +378,17 @@ enum BufferBit
 }
 
 /** 
+ * Swap the front and back buffers of the specified window.
+ *
+ * Params:
+ *   gw = The game engine window 
+ */
+void swapBuffers(GameWindow* gw)
+{
+    glfwSwapBuffers(gw);
+}
+
+/** 
  * Key callback.
  *
  * Params:
