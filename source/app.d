@@ -35,7 +35,7 @@ struct Transform
  */
 struct RigidBody
 {
-    Vec2 velocity;
+    Vec2 velocity = Vec2(0, 0);
     float mass = 1;
     bool isStatic = false;
     float restitution = 0.8f;
@@ -125,13 +125,12 @@ struct Renderer
         glUseProgram(shaderProgram);
 
         float[16] matrix = [
-            t.scale.x * cos(t.rotation), -t.scale.y * sin(t.rotation), 0,
-            t.position.x, t.scale.x * sin(t.rotation),
-            t.scale.y * cos(t.rotation), 0, t.position.y, 0, 0, 1, 0, 0, 0, 0, 1
+            t.scale.x * cos(t.rotation), -t.scale.x * sin(t.rotation), 0, 0,
+            t.scale.y * sin(t.rotation), t.scale.y * cos(t.rotation), 0, 0, 0,
+            0, 1, 0, t.position.x, t.position.y, 0, 1
         ];
 
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
-                GL_FALSE, matrix.ptr);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_TRUE, matrix.ptr);
         glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -141,7 +140,7 @@ struct Renderer
 struct Physics
 {
     GameObject*[] objects;
-    Vec2 gravity = Vec2(0, -9.81f);
+    Vec2 gravity = Vec2(0, -0.5f);
 
     void addObject(GameObject* obj)
     {
@@ -155,14 +154,9 @@ struct Physics
             if (!obj.rigidbody || obj.rigidbody.isStatic)
                 continue;
 
-            obj.rigidbody.velocity.x += gravity.x * dt;
             obj.rigidbody.velocity.y += gravity.y * dt;
-
-            obj.transform.position.x += obj.rigidbody.velocity.x * dt;
             obj.transform.position.y += obj.rigidbody.velocity.y * dt;
         }
-
-        checkCollisions();
     }
 
     void checkCollisions()
@@ -347,20 +341,20 @@ void main()
     Nova engine;
     engine.initialize("Nova Game Engine");
 
-    auto ground = engine.createGameObject(Vec2(0, -0.8f), Vec2(2, 0.1f));
+    auto ground = engine.createGameObject(Vec2(0, -0.5f), Vec2(1.8f, 0.2f));
     ground.color = Color(0.5f, 0.5f, 0.5f, 1);
     engine.addRigidBody(ground, 1, true);
-    engine.addCollider(ground, Collider.Type.Rectangle, Vec2(2, 0.1f));
+    engine.addCollider(ground, Collider.Type.Rectangle, Vec2(1.8f, 0.2f));
 
-    auto ball1 = engine.createGameObject(Vec2(-0.3f, 0.5f), Vec2(0.1f, 0.1f));
+    auto ball1 = engine.createGameObject(Vec2(-0.3f, 0.8f), Vec2(0.2f, 0.2f));
     ball1.color = Color(1, 0, 0, 1);
     engine.addRigidBody(ball1, 1);
-    engine.addCollider(ball1, Collider.Type.Circle, Vec2(0.05f, 0.05f));
+    engine.addCollider(ball1, Collider.Type.Circle, Vec2(0.1f, 0.1f));
 
-    auto ball2 = engine.createGameObject(Vec2(0.3f, 0.8f), Vec2(0.08f, 0.08f));
+    auto ball2 = engine.createGameObject(Vec2(0.3f, 0.6f), Vec2(0.15f, 0.15f));
     ball2.color = Color(0, 1, 0, 1);
     engine.addRigidBody(ball2, 0.5f);
-    engine.addCollider(ball2, Collider.Type.Circle, Vec2(0.04f, 0.04f));
+    engine.addCollider(ball2, Collider.Type.Circle, Vec2(0.075f, 0.075f));
 
     engine.run();
     engine.cleanup();
