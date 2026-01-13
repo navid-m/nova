@@ -289,6 +289,13 @@ alias GameWindow = GLFWwindow;
  */
 bool shouldClose(GameWindow* gw) => glfwWindowShouldClose(gw) != 0;
 
+/** 
+ * Get the current game time.
+ *
+ * Returns: The current game time as a double.
+ */
+double getTime() => glfwGetTime();
+
 extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) nothrow
 {
     try
