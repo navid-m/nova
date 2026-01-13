@@ -41,7 +41,7 @@ unittest
 
     while (engine.running && !shouldClose(engine.window))
     {
-        double currentTime = glfwGetTime();
+        double currentTime = getTime();
         float deltaTime = cast(float)(currentTime - engine.lastTime);
         engine.lastTime = currentTime;
 
