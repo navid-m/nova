@@ -3,6 +3,10 @@
 		"Navid"
 	],
 	"copyright": "Copyright © 2026, Navid",
+	"dependencies": {
+		"bindbc-glfw": "~>1.1.2",
+		"bindbc-opengl": "~>1.1.0"
+	},
 	"description": "2D game engine",
 	"license": "GPL-3.0-only",
 	"name": "nova"
