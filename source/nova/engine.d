@@ -78,7 +78,18 @@ struct Input
 }
 
 /** 
- * Common key constants for easier input handling.
+ * Common key events.
+ */
+enum KeyEvent
+{
+    Release = 0,
+    Press = 1,
+    Repeat = 2,
+    Unknown = -1
+}
+
+/** 
+ * Common key constants.
  */
 enum Key
 {
