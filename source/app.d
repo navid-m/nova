@@ -146,7 +146,8 @@ struct Renderer
             t.position.y, 0, 1
         ];
 
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_TRUE, matrix.ptr);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
+                GL_FALSE, matrix.ptr);
         glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
         glBindVertexArray(circleVAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 33);
@@ -161,7 +162,8 @@ struct Renderer
             t.position.y, 0, 1
         ];
 
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_TRUE, matrix.ptr);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
+                GL_FALSE, matrix.ptr);
         glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
         glBindVertexArray(rectVAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -187,6 +189,12 @@ struct Physics
 
             obj.rigidbody.velocity.y += gravity.y * dt;
             obj.transform.position.y += obj.rigidbody.velocity.y * dt;
+
+            if (obj.transform.position.y < -0.4f)
+            {
+                obj.transform.position.y = -0.4f;
+                obj.rigidbody.velocity.y = -obj.rigidbody.velocity.y * 0.8f;
+            }
         }
     }
 
