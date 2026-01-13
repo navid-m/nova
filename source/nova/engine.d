@@ -357,6 +357,27 @@ void clearColor(float r, float b, float g, float a)
 }
 
 /** 
+ * Clear buffers to preset values.
+ *
+ * Params:
+ *   bb = Bitfield mask 
+ */
+void clear(BufferBit bb)
+{
+    glClear(bb);
+}
+
+/** 
+ * OpenGL bitmask constant.
+ */
+enum BufferBit
+{
+    Color = 0x00004000,
+    Depth = 0x00000100,
+    Stencil = 0x00000400
+}
+
+/** 
  * Key callback.
  *
  * Params:

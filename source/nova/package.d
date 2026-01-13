@@ -64,7 +64,7 @@ unittest
         engine.physics.update(deltaTime);
 
         clearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        clear(BufferBit.Color);
 
         foreach (obj; engine.gameObjects)
         {
