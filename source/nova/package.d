@@ -46,14 +46,15 @@ unittest
         engine.lastTime = currentTime;
 
         glfwPollEvents();
-        engine.input.update();
 
-        if (engine.input.isKeyPressed(Key.Escape))
+        if (glfwGetKey(engine.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             engine.running = false;
 
-        if (engine.input.isMousePressed(Mouse.Left))
+        if (glfwGetMouseButton(engine.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
         {
-            Vec2 worldPos = engine.screenToWorld(engine.input.mousePos);
+            double x, y;
+            glfwGetCursorPos(engine.window, &x, &y);
+            Vec2 worldPos = engine.screenToWorld(Vec2(cast(float) x, cast(float) y));
             auto newBall = engine.createGameObject(worldPos, Vec2(0.1f, 0.1f));
             newBall.color = Color(0, 0, 1, 1);
             engine.addRigidBody(newBall, 0.3f);
