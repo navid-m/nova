@@ -68,10 +68,19 @@ struct GameObject
     bool active = true;
 }
 
+/** 
+ * The main renderer of the game.
+ *
+ * This is the heart of any game built with Nova.
+ */
 struct Renderer
 {
     uint shaderProgram, rectVAO, rectVBO, circleVAO, circleVBO;
 
+    /** 
+     * Initialize the renderer, this must be called prior to the usage of the renderer
+     * at all. 
+     */
     void initialize()
     {
         const char* vertexShader = `
@@ -137,15 +146,20 @@ struct Renderer
         glEnableVertexAttribArray(0);
     }
 
+    /** 
+     * Draw some circle via the renderer.
+     *
+     * Params:
+     *   t = The transform 
+     *   c = The colour of the circle in ARGB format
+     */
     void drawCircle(Transform t, Color c)
     {
         glUseProgram(shaderProgram);
 
         float aspect = 1920.0f / 1080.0f;
         float[16] matrix = [
-            t.scale.x / aspect, 0, 0, 0,
-            0, t.scale.y, 0, 0,
-            0, 0, 1, 0,
+            t.scale.x / aspect, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0,
             t.position.x, t.position.y, 0, 1
         ];
 
@@ -156,6 +170,13 @@ struct Renderer
         glDrawArrays(GL_TRIANGLE_FAN, 0, 33);
     }
 
+    /** 
+     * Draw some rectangle via the renderer.
+     *
+     * Params:
+     *   t = The transform
+     *   c = The colour of the rectangle in ARGB format
+     */
     void drawRect(Transform t, Color c)
     {
         glUseProgram(shaderProgram);
@@ -173,16 +194,31 @@ struct Renderer
     }
 }
 
+/** 
+ * The physics engine.
+ */
 struct Physics
 {
     GameObject*[] objects;
     Vec2 gravity = Vec2(0, -0.5f);
 
+    /** 
+     * Add some object to the physics world.
+     * 
+     * Params:
+     *   obj = The object to add 
+     */
     void addObject(GameObject* obj)
     {
         objects ~= obj;
     }
 
+    /** 
+     * Update the physics loop.
+     *
+     * Params:
+     *   dt = Delta time 
+     */
     void update(float dt)
     {
         foreach (obj; objects)
@@ -201,6 +237,9 @@ struct Physics
         }
     }
 
+    /** 
+     * Check for collisions in the physics world. 
+     */
     void checkCollisions()
     {
         for (size_t i = 0; i < objects.length; i++)
