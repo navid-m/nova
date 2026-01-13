@@ -50,7 +50,7 @@ unittest
         if (getKey(engine.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             engine.running = false;
 
-        if (glfwGetMouseButton(engine.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+        if (getMouseButton(engine.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
         {
             double x, y;
             glfwGetCursorPos(engine.window, &x, &y);
