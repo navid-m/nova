@@ -118,7 +118,6 @@ struct Renderer
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * float.sizeof, cast(void*) 0);
         glEnableVertexAttribArray(0);
 
-        // Circle vertices
         float[] circleVertices;
         int segments = 32;
         for (int i = 0; i <= segments; i++)
