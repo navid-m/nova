@@ -1280,7 +1280,7 @@ struct Nova
     Vec2 screenToWorld(Vec2 screenPos)
     {
         float aspect = 1920.0f / 1080.0f;
-        return Vec2((screenPos.x / 1920.0f - 0.5f) * 2.0f * aspect,
+        return Vec2((screenPos.x / 1920.0f - 0.5f) * 2.0f,
                 -(screenPos.y / 1080.0f - 0.5f) * 2.0f);
     }
 
@@ -1295,7 +1295,7 @@ struct Nova
     Vec2 worldToScreen(Vec2 worldPos)
     {
         float aspect = 1920.0f / 1080.0f;
-        return Vec2((worldPos.x / aspect / 2.0f + 0.5f) * 1920.0f,
+        return Vec2((worldPos.x / 2.0f + 0.5f) * 1920.0f,
                 (-worldPos.y / 2.0f + 0.5f) * 1080.0f);
     }
 
