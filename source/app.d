@@ -254,6 +254,15 @@ struct Physics
         }
     }
 
+    /** 
+     * Determine whether two game objects are colliding.
+     *
+     * Params:
+     *   a = Object A
+     *   b = Object B
+     *
+     * Returns: Whether or not they are colliding 
+     */
     bool isColliding(GameObject* a, GameObject* b)
     {
         if (!a.collider || !b.collider)
@@ -271,6 +280,13 @@ struct Physics
         return false;
     }
 
+    /** 
+     * Resolve a collision between two game objects.
+     *
+     * Params:
+     *   a = Object A 
+     *   b = Object B
+     */
     void resolveCollision(GameObject* a, GameObject* b)
     {
         if (!a.rigidbody || !b.rigidbody)
@@ -313,6 +329,9 @@ struct Physics
     }
 }
 
+/** 
+ * The Nova Game Engine.
+ */
 struct Nova
 {
     GLFWwindow* window;
@@ -322,6 +341,12 @@ struct Nova
     GameObject*[] gameObjects;
     double lastTime;
 
+    /** 
+     * Initialize the game engine.
+     *
+     * Params:
+     *   title = The window title 
+     */
     void initialize(string title)
     {
         if (loadGLFW() != glfwSupport)
@@ -359,6 +384,15 @@ struct Nova
         running = true;
     }
 
+    /** 
+     * Create some game object.
+     *
+     * Params:
+     *   pos = Origin of the new game object as a 2D vector 
+     *   scale = Scale of the game object, defaults to 1.
+     *
+     * Returns: A reference to the new game object that has been created. 
+     */
     GameObject* createGameObject(Vec2 pos, Vec2 scale = Vec2(1, 1))
     {
         GameObject* obj = new GameObject();
@@ -368,6 +402,14 @@ struct Nova
         return obj;
     }
 
+    /** 
+     * Add a game object to the world as a rigid body.
+     *
+     * Params:
+     *   obj = The object
+     *   mass = The mass of the object
+     *   isStatic = Whether or not it is static, defaults to false
+     */
     void addRigidBody(GameObject* obj, float mass = 1, bool isStatic = false)
     {
         obj.rigidbody = new RigidBody();
@@ -376,6 +418,14 @@ struct Nova
         physics.addObject(obj);
     }
 
+    /** 
+     * Add a collider to the world.
+     *
+     * Params:
+     *   obj = Source object 
+     *   type = Type of collider
+     *   size = Size of object as a 2D vector
+     */
     void addCollider(GameObject* obj, Collider.Type type, Vec2 size)
     {
         obj.collider = new Collider();
@@ -383,6 +433,9 @@ struct Nova
         obj.collider.size = size;
     }
 
+    /** 
+     * Run the game.
+     */
     void run()
     {
         while (running && !glfwWindowShouldClose(window))
@@ -413,6 +466,9 @@ struct Nova
         }
     }
 
+    /** 
+     * Destroy the window and clean up the underlying GLFW resources.
+     */
     void cleanup()
     {
         glfwDestroyWindow(window);
