@@ -269,6 +269,14 @@ struct GameObject
     bool active = true;
 }
 
+/** 
+ * Poll for events.
+ */
+void pollEvents()
+{
+    glfwPollEvents();
+}
+
 extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) nothrow
 {
     try

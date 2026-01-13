@@ -45,7 +45,7 @@ unittest
         float deltaTime = cast(float)(currentTime - engine.lastTime);
         engine.lastTime = currentTime;
 
-        glfwPollEvents();
+        pollEvents();
 
         if (glfwGetKey(engine.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             engine.running = false;
