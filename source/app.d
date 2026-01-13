@@ -1,11 +1,251 @@
 import bindbc.glfw;
 import bindbc.opengl;
 import std.stdio;
+import std.math;
+import std.algorithm;
+
+/** 
+ * Some two dimensional vector. 
+ */
+struct Vec2
+{
+    float x, y;
+}
+
+/** 
+ * Some RGBA colour.
+ */
+struct Color
+{
+    float r, g, b, a;
+}
+
+/** 
+ * A transformation between two 2D vectors.
+ */
+struct Transform
+{
+    Vec2 position;
+    float rotation = 0;
+    Vec2 scale = Vec2(1, 1);
+}
+
+/** 
+ * Some rigid body in the physics world.
+ */
+struct RigidBody
+{
+    Vec2 velocity;
+    float mass = 1;
+    bool isStatic = false;
+    float restitution = 0.8f;
+}
+
+/** 
+ * Some collider in the physics world.
+ */
+struct Collider
+{
+    enum Type
+    {
+        Circle,
+        Rectangle
+    }
+
+    Type type;
+    Vec2 size;
+}
+
+/** 
+ * An object in the physics world.
+ */
+struct GameObject
+{
+    Transform transform;
+    RigidBody* rigidbody;
+    Collider* collider;
+    Color color = Color(1, 1, 1, 1);
+    bool active = true;
+}
+
+struct Renderer
+{
+    uint shaderProgram;
+    uint VAO, VBO;
+
+    void initialize()
+    {
+        const char* vertexShader = `
+            #version 330 core
+            layout (location = 0) in vec2 aPos;
+            uniform mat4 transform;
+            void main() {
+                gl_Position = transform * vec4(aPos, 0.0, 1.0);
+            }`;
+
+        const char* fragmentShader = `
+            #version 330 core
+            out vec4 FragColor;
+            uniform vec4 color;
+            void main() {
+                FragColor = color;
+            }`;
+
+        uint vs = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vs, 1, &vertexShader, null);
+        glCompileShader(vs);
+
+        uint fs = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fs, 1, &fragmentShader, null);
+        glCompileShader(fs);
+
+        shaderProgram = glCreateProgram();
+        glAttachShader(shaderProgram, vs);
+        glAttachShader(shaderProgram, fs);
+        glLinkProgram(shaderProgram);
+
+        glDeleteShader(vs);
+        glDeleteShader(fs);
+
+        float[] vertices = [
+            -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f
+        ];
+
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.length * float.sizeof, vertices.ptr, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * float.sizeof, cast(void*) 0);
+        glEnableVertexAttribArray(0);
+    }
+
+    void drawRect(Transform t, Color c)
+    {
+        glUseProgram(shaderProgram);
+
+        float[16] matrix = [
+            t.scale.x * cos(t.rotation), -t.scale.y * sin(t.rotation), 0,
+            t.position.x, t.scale.x * sin(t.rotation),
+            t.scale.y * cos(t.rotation), 0, t.position.y, 0, 0, 1, 0, 0, 0, 0, 1
+        ];
+
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
+                GL_FALSE, matrix.ptr);
+        glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    }
+}
+
+struct Physics
+{
+    GameObject*[] objects;
+    Vec2 gravity = Vec2(0, -9.81f);
+
+    void addObject(GameObject* obj)
+    {
+        objects ~= obj;
+    }
+
+    void update(float dt)
+    {
+        foreach (obj; objects)
+        {
+            if (!obj.rigidbody || obj.rigidbody.isStatic)
+                continue;
+
+            obj.rigidbody.velocity.x += gravity.x * dt;
+            obj.rigidbody.velocity.y += gravity.y * dt;
+
+            obj.transform.position.x += obj.rigidbody.velocity.x * dt;
+            obj.transform.position.y += obj.rigidbody.velocity.y * dt;
+        }
+
+        checkCollisions();
+    }
+
+    void checkCollisions()
+    {
+        for (size_t i = 0; i < objects.length; i++)
+        {
+            for (size_t j = i + 1; j < objects.length; j++)
+            {
+                if (isColliding(objects[i], objects[j]))
+                {
+                    resolveCollision(objects[i], objects[j]);
+                }
+            }
+        }
+    }
+
+    bool isColliding(GameObject* a, GameObject* b)
+    {
+        if (!a.collider || !b.collider)
+            return false;
+
+        float dx = a.transform.position.x - b.transform.position.x;
+        float dy = a.transform.position.y - b.transform.position.y;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        if (a.collider.type == Collider.Type.Circle && b.collider.type == Collider.Type.Circle)
+        {
+            return distance < (a.collider.size.x + b.collider.size.x);
+        }
+
+        return false;
+    }
+
+    void resolveCollision(GameObject* a, GameObject* b)
+    {
+        if (!a.rigidbody || !b.rigidbody)
+            return;
+
+        Vec2 normal;
+        float dx = b.transform.position.x - a.transform.position.x;
+        float dy = b.transform.position.y - a.transform.position.y;
+        float distance = sqrt(dx * dx + dy * dy);
+
+        if (distance > 0)
+        {
+            normal.x = dx / distance;
+            normal.y = dy / distance;
+        }
+
+        float relativeVelocityX = b.rigidbody.velocity.x - a.rigidbody.velocity.x;
+        float relativeVelocityY = b.rigidbody.velocity.y - a.rigidbody.velocity.y;
+        float velocityAlongNormal = relativeVelocityX * normal.x + relativeVelocityY * normal.y;
+
+        if (velocityAlongNormal > 0)
+            return;
+
+        float e = min(a.rigidbody.restitution, b.rigidbody.restitution);
+        float j = -(1 + e) * velocityAlongNormal / (1 / a.rigidbody.mass + 1 / b.rigidbody.mass);
+
+        Vec2 impulse = Vec2(j * normal.x, j * normal.y);
+
+        if (!a.rigidbody.isStatic)
+        {
+            a.rigidbody.velocity.x -= impulse.x / a.rigidbody.mass;
+            a.rigidbody.velocity.y -= impulse.y / a.rigidbody.mass;
+        }
+
+        if (!b.rigidbody.isStatic)
+        {
+            b.rigidbody.velocity.x += impulse.x / b.rigidbody.mass;
+            b.rigidbody.velocity.y += impulse.y / b.rigidbody.mass;
+        }
+    }
+}
 
 struct Nova
 {
     GLFWwindow* window;
     bool running;
+    Renderer renderer;
+    Physics physics;
+    GameObject*[] gameObjects;
+    double lastTime;
 
     void initialize(string title)
     {
@@ -36,15 +276,61 @@ struct Nova
         }
 
         glViewport(0, 0, 1920, 1080);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        renderer.initialize();
+        lastTime = glfwGetTime();
         running = true;
+    }
+
+    GameObject* createGameObject(Vec2 pos, Vec2 scale = Vec2(1, 1))
+    {
+        GameObject* obj = new GameObject();
+        obj.transform.position = pos;
+        obj.transform.scale = scale;
+        gameObjects ~= obj;
+        return obj;
+    }
+
+    void addRigidBody(GameObject* obj, float mass = 1, bool isStatic = false)
+    {
+        obj.rigidbody = new RigidBody();
+        obj.rigidbody.mass = mass;
+        obj.rigidbody.isStatic = isStatic;
+        physics.addObject(obj);
+    }
+
+    void addCollider(GameObject* obj, Collider.Type type, Vec2 size)
+    {
+        obj.collider = new Collider();
+        obj.collider.type = type;
+        obj.collider.size = size;
     }
 
     void run()
     {
         while (running && !glfwWindowShouldClose(window))
         {
+            double currentTime = glfwGetTime();
+            float deltaTime = cast(float)(currentTime - lastTime);
+            lastTime = currentTime;
+
             glfwPollEvents();
+
+            physics.update(deltaTime);
+
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            foreach (obj; gameObjects)
+            {
+                if (obj.active)
+                {
+                    renderer.drawRect(obj.transform, obj.color);
+                }
+            }
+
             glfwSwapBuffers(window);
         }
     }
@@ -59,7 +345,23 @@ struct Nova
 void main()
 {
     Nova engine;
-    engine.initialize("Example game");
+    engine.initialize("Nova Game Engine");
+
+    auto ground = engine.createGameObject(Vec2(0, -0.8f), Vec2(2, 0.1f));
+    ground.color = Color(0.5f, 0.5f, 0.5f, 1);
+    engine.addRigidBody(ground, 1, true);
+    engine.addCollider(ground, Collider.Type.Rectangle, Vec2(2, 0.1f));
+
+    auto ball1 = engine.createGameObject(Vec2(-0.3f, 0.5f), Vec2(0.1f, 0.1f));
+    ball1.color = Color(1, 0, 0, 1);
+    engine.addRigidBody(ball1, 1);
+    engine.addCollider(ball1, Collider.Type.Circle, Vec2(0.05f, 0.05f));
+
+    auto ball2 = engine.createGameObject(Vec2(0.3f, 0.8f), Vec2(0.08f, 0.08f));
+    ball2.color = Color(0, 1, 0, 1);
+    engine.addRigidBody(ball2, 0.5f);
+    engine.addCollider(ball2, Collider.Type.Circle, Vec2(0.04f, 0.04f));
+
     engine.run();
     engine.cleanup();
 }

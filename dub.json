@@ -9,5 +9,6 @@
 	},
 	"description": "2D game engine",
 	"license": "GPL-3.0-only",
-	"name": "nova"
+	"name": "nova",
+	"versions": ["GL_30"]
 }
