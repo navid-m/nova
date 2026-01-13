@@ -39,7 +39,7 @@ unittest
         engine.addSprite(frameObj, texture, frame);
     }
 
-    while (engine.running && !glfwWindowShouldClose(engine.window))
+    while (engine.running && !shouldClose(engine.window))
     {
         double currentTime = glfwGetTime();
         float deltaTime = cast(float)(currentTime - engine.lastTime);

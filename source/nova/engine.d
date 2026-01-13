@@ -277,6 +277,18 @@ void pollEvents()
     glfwPollEvents();
 }
 
+alias GameWindow = GLFWwindow;
+
+/** 
+ * Should the game window close?
+ * 
+ * Params:
+ *   gw = The game window.
+ *
+ * Returns: Whether or not it should close
+ */
+bool shouldClose(GameWindow* gw) => glfwWindowShouldClose(gw) != 0;
+
 extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) nothrow
 {
     try
@@ -299,6 +311,9 @@ extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int actio
     }
     catch (Exception)
     {
+        import std.conv;
+
+        writeln("Key callback failed for key with ID " ~ to!string(key));
     }
 }
 
@@ -324,6 +339,9 @@ extern (C) void mouseButtonCallback(GLFWwindow* window, int button, int action, 
     }
     catch (Exception)
     {
+        import std.conv;
+
+        writeln("Button callback failed for button with ID " ~ to!string(button));
     }
 }
 
