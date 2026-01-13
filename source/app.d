@@ -7,7 +7,7 @@ struct GameEngine
     GLFWwindow* window;
     bool running;
 
-    void init()
+    void initialize(string title)
     {
         if (loadGLFW() != glfwSupport)
         {
@@ -19,7 +19,7 @@ struct GameEngine
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-        window = glfwCreateWindow(1920, 1080, "2D Game Engine".ptr, null, null);
+        window = glfwCreateWindow(1920, 1080, title.ptr, null, null);
         if (!window)
         {
             glfwTerminate();
@@ -31,7 +31,7 @@ struct GameEngine
         GLSupport glSupport = loadOpenGL();
         if (glSupport == GLSupport.noLibrary)
         {
-            writeln("Could not load OpenGL");
+            writeln("ERROR: Could not load OpenGL");
             return;
         }
 
@@ -44,11 +44,7 @@ struct GameEngine
         while (running && !glfwWindowShouldClose(window))
         {
             glfwPollEvents();
-
             glClear(GL_COLOR_BUFFER_BIT);
-
-            // Render here
-
             glfwSwapBuffers(window);
         }
     }
@@ -63,7 +59,7 @@ struct GameEngine
 void main()
 {
     GameEngine engine;
-    engine.init();
+    engine.initialize("Example game");
     engine.run();
     engine.cleanup();
 }
