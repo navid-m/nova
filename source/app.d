@@ -141,9 +141,12 @@ struct Renderer
     {
         glUseProgram(shaderProgram);
 
+        float aspect = 1920.0f / 1080.0f;
         float[16] matrix = [
-            t.scale.x, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0, t.position.x,
-            t.position.y, 0, 1
+            t.scale.x / aspect, 0, 0, 0,
+            0, t.scale.y, 0, 0,
+            0, 0, 1, 0,
+            t.position.x, t.position.y, 0, 1
         ];
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
