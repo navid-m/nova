@@ -307,6 +307,17 @@ double getTime() => glfwGetTime();
  */
 ulong getKey(GameWindow* gw, int keyCode) => glfwGetKey(gw, keyCode);
 
+/** 
+ * Get some mouse button press.
+ *
+ * Params:
+ *   gw = The game window. 
+ *   mbCode = The current mouse button.
+ *
+ * Returns: GLFW_PRESS or not. 
+ */
+ulong getMouseButton(GameWindow* gw, int mbCode) => glfwGetMouseButton(gw, mbCode);
+
 extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) nothrow
 {
     try
