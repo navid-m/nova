@@ -70,8 +70,7 @@ struct GameObject
 
 struct Renderer
 {
-    uint shaderProgram;
-    uint rectVAO, rectVBO, circleVAO, circleVBO;
+    uint shaderProgram, rectVAO, rectVBO, circleVAO, circleVBO;
 
     void initialize()
     {
