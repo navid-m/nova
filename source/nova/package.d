@@ -1,6 +1,7 @@
 module nova;
 
 public import nova.engine;
+
 import std.math : abs;
 import bindbc.glfw;
 import bindbc.opengl;
