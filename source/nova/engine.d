@@ -296,6 +296,17 @@ bool shouldClose(GameWindow* gw) => glfwWindowShouldClose(gw) != 0;
  */
 double getTime() => glfwGetTime();
 
+/** 
+ * Get some keypress.
+ *
+ * Params:
+ *   gw = The game window.
+ *   keyCode = The current key.
+ *
+ * Returns: GLFW_PRESS or not. 
+ */
+ulong getKey(GameWindow* gw, int keyCode) => glfwGetKey(gw, keyCode);
+
 extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) nothrow
 {
     try
