@@ -330,6 +330,19 @@ ulong getKey(GameWindow* gw, int keyCode) => glfwGetKey(gw, keyCode);
 ulong getMouseButton(GameWindow* gw, int mbCode) => glfwGetMouseButton(gw, mbCode);
 
 /** 
+ * Get the position of the mouse cursor.
+ *
+ * Params:
+ *   window = The game window.
+ *   x = X position to read the value into
+ *   y = Y position to read the value into
+ */
+void getCursorPosition(GameWindow* window, double* x, double* y)
+{
+    glfwGetCursorPos(window, x, y);
+}
+
+/** 
  * Key callback.
  *
  * Params:

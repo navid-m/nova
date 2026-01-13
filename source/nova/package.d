@@ -53,7 +53,7 @@ unittest
         if (getMouseButton(engine.window, Mouse.Left) == KeyEvent.Press)
         {
             double x, y;
-            glfwGetCursorPos(engine.window, &x, &y);
+            getCursorPosition(engine.window, &x, &y);
             Vec2 worldPos = engine.screenToWorld(Vec2(cast(float) x, cast(float) y));
             auto newBall = engine.createGameObject(worldPos, Vec2(0.1f, 0.1f));
             newBall.color = Color(0, 0, 1, 1);
