@@ -71,7 +71,7 @@ struct GameObject
 struct Renderer
 {
     uint shaderProgram;
-    uint VAO, VBO;
+    uint rectVAO, rectVBO, circleVAO, circleVBO;
 
     void initialize()
     {
@@ -111,13 +111,47 @@ struct Renderer
             -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f
         ];
 
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glGenVertexArrays(1, &rectVAO);
+        glGenBuffers(1, &rectVBO);
+        glBindVertexArray(rectVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
         glBufferData(GL_ARRAY_BUFFER, vertices.length * float.sizeof, vertices.ptr, GL_STATIC_DRAW);
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * float.sizeof, cast(void*) 0);
         glEnableVertexAttribArray(0);
+
+        // Circle vertices
+        float[] circleVertices;
+        int segments = 32;
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle = 2.0f * 3.14159f * i / segments;
+            circleVertices ~= cos(angle) * 0.5f;
+            circleVertices ~= sin(angle) * 0.5f;
+        }
+
+        glGenVertexArrays(1, &circleVAO);
+        glGenBuffers(1, &circleVBO);
+        glBindVertexArray(circleVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
+        glBufferData(GL_ARRAY_BUFFER, circleVertices.length * float.sizeof,
+                circleVertices.ptr, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * float.sizeof, cast(void*) 0);
+        glEnableVertexAttribArray(0);
+    }
+
+    void drawCircle(Transform t, Color c)
+    {
+        glUseProgram(shaderProgram);
+
+        float[16] matrix = [
+            t.scale.x, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0, t.position.x,
+            t.position.y, 0, 1
+        ];
+
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_TRUE, matrix.ptr);
+        glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
+        glBindVertexArray(circleVAO);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 33);
     }
 
     void drawRect(Transform t, Color c)
@@ -125,14 +159,13 @@ struct Renderer
         glUseProgram(shaderProgram);
 
         float[16] matrix = [
-            t.scale.x * cos(t.rotation), -t.scale.x * sin(t.rotation), 0, 0,
-            t.scale.y * sin(t.rotation), t.scale.y * cos(t.rotation), 0, 0, 0,
-            0, 1, 0, t.position.x, t.position.y, 0, 1
+            t.scale.x, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0, t.position.x,
+            t.position.y, 0, 1
         ];
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_TRUE, matrix.ptr);
         glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
-        glBindVertexArray(VAO);
+        glBindVertexArray(rectVAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
 }
@@ -321,7 +354,10 @@ struct Nova
             {
                 if (obj.active)
                 {
-                    renderer.drawRect(obj.transform, obj.color);
+                    if (obj.collider && obj.collider.type == Collider.Type.Circle)
+                        renderer.drawCircle(obj.transform, obj.color);
+                    else
+                        renderer.drawRect(obj.transform, obj.color);
                 }
             }
 
