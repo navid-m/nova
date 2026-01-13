@@ -6,6 +6,7 @@ import std.stdio;
 import std.math;
 import std.algorithm;
 import std.string;
+import std.random;
 
 /** 
  * Some two dimensional vector. 
@@ -708,6 +709,137 @@ struct Renderer
         glBindVertexArray(spriteVAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
+
+    /** 
+     * Draw particles from an emitter.
+     *
+     * Params:
+     *   emitter = The particle emitter
+     */
+    void drawParticles(ParticleEmitter emitter)
+    {
+        foreach (p; emitter.particles)
+        {
+            if (p.life > 0)
+            {
+                Transform t;
+                t.position = p.position;
+                t.scale = Vec2(p.size, p.size);
+                // Simple rect drawing for now
+                drawRect(t, p.color);
+            }
+        }
+    }
+}
+
+/**
+ * A single particle.
+ */
+struct Particle
+{
+    Vec2 position;
+    Vec2 velocity;
+    Color color;
+    float size;
+    float life = 0;
+    float startLife = 0;
+    float rotation = 0;
+    float rotationSpeed = 0;
+}
+
+/**
+ * A particle emitter system.
+ */
+struct ParticleEmitter
+{
+    Vec2 position;
+    Particle[] particles;
+
+    float emissionRate = 0;
+    Vec2 velocityMin = Vec2(-1, -1);
+    Vec2 velocityMax = Vec2(1, 1);
+    Color colorStart = Color(1, 1, 1, 1);
+    Color colorEnd = Color(1, 1, 1, 0);
+    float lifetimeMin = 1.0f;
+    float lifetimeMax = 2.0f;
+    float sizeStart = 0.1f;
+    float sizeEnd = 0.0f;
+    Vec2 gravity = Vec2(0, 0);
+    bool active = true;
+    bool loop = true;
+    float rotationSpeedMin = 0;
+    float rotationSpeedMax = 0;
+
+    float emitTimer = 0;
+
+    void update(float dt)
+    {
+        if (active && emissionRate > 0)
+        {
+            emitTimer += dt;
+            float emitInterval = 1.0f / emissionRate;
+            while (emitTimer >= emitInterval)
+            {
+                burst(1);
+                emitTimer -= emitInterval;
+            }
+        }
+
+        foreach (ref p; particles)
+        {
+            if (p.life > 0)
+            {
+                p.life -= dt;
+                if (p.life <= 0)
+                    continue;
+
+                p.velocity.x += gravity.x * dt;
+                p.velocity.y += gravity.y * dt;
+                p.position.x += p.velocity.x * dt;
+                p.position.y += p.velocity.y * dt;
+                p.rotation += p.rotationSpeed * dt;
+
+                float t = 1.0f - (p.life / p.startLife);
+
+                p.color.r = colorStart.r + (colorEnd.r - colorStart.r) * t;
+                p.color.g = colorStart.g + (colorEnd.g - colorStart.g) * t;
+                p.color.b = colorStart.b + (colorEnd.b - colorStart.b) * t;
+                p.color.a = colorStart.a + (colorEnd.a - colorStart.a) * t;
+
+                p.size = sizeStart + (sizeEnd - sizeStart) * t;
+            }
+        }
+    }
+
+    void burst(int count)
+    {
+        int emitted = 0;
+        foreach (ref p; particles)
+        {
+            if (p.life <= 0)
+            {
+                p.life = (lifetimeMax > lifetimeMin) ? uniform(lifetimeMin, lifetimeMax)
+                    : lifetimeMin;
+                p.startLife = p.life;
+                p.position = position;
+
+                p.velocity.x = (velocityMax.x > velocityMin.x)
+                    ? uniform(velocityMin.x, velocityMax.x) : velocityMin.x;
+                p.velocity.y = (velocityMax.y > velocityMin.y)
+                    ? uniform(velocityMin.y, velocityMax.y) : velocityMin.y;
+
+                p.color = colorStart;
+                p.size = sizeStart;
+                p.rotation = uniform(0.0f, 360.0f);
+                p.rotationSpeed = (rotationSpeedMax > rotationSpeedMin)
+                    ? uniform(rotationSpeedMin, rotationSpeedMax) : rotationSpeedMin;
+
+                emitted++;
+                if (emitted >= count)
+                    break;
+            }
+        }
+    }
 }
 
 /** 
@@ -717,6 +849,7 @@ struct Physics
 {
     GameObject*[] objects;
     Vec2 gravity = Vec2(0, -0.5f);
+    void delegate(GameObject* obj) onGroundHit;
 
     /** 
      * Add some object to the physics world.
@@ -747,6 +880,9 @@ struct Physics
 
             if (obj.transform.position.y < -0.4f)
             {
+                if (obj.rigidbody.velocity.y < 0 && onGroundHit)
+                    onGroundHit(obj);
+
                 obj.transform.position.y = -0.4f;
                 obj.rigidbody.velocity.y = -obj.rigidbody.velocity.y * 0.8f;
             }
@@ -855,10 +991,29 @@ struct Nova
     Renderer renderer;
     Physics physics;
     GameObject*[] gameObjects;
+    ParticleEmitter*[] particleEmitters;
     Texture*[] textures;
     double lastTime;
     Input input;
     Vec2 lastMousePos;
+
+    /** 
+     * Create a particle emitter.
+     *
+     * Params:
+     *   pos = Position of the emitter
+     *   maxParticles = Maximum number of particles
+     *
+     * Returns: Reference to the new particle emitter
+     */
+    ParticleEmitter* createParticleEmitter(Vec2 pos, int maxParticles)
+    {
+        ParticleEmitter* emitter = new ParticleEmitter();
+        emitter.position = pos;
+        emitter.particles.length = maxParticles;
+        particleEmitters ~= emitter;
+        return emitter;
+    }
 
     /** 
      * Load a texture from a simple PPM file.

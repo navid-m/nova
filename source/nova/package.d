@@ -9,6 +9,31 @@ unittest
     Nova engine;
     engine.initialize("Nova Game Engine");
 
+    auto explosionEmitter = engine.createParticleEmitter(Vec2(0, 0), 200);
+
+    explosionEmitter.active = true;
+    explosionEmitter.emissionRate = 0;
+    explosionEmitter.loop = false;
+    explosionEmitter.velocityMin = Vec2(-1.0f, 0.5f);
+    explosionEmitter.velocityMax = Vec2(1.0f, 1.5f);
+    explosionEmitter.colorStart = Color(1.0f, 0.5f, 0.2f, 1.0f);
+    explosionEmitter.colorEnd = Color(1.0f, 0.0f, 0.0f, 0.0f);
+    explosionEmitter.lifetimeMin = 0.3f;
+    explosionEmitter.lifetimeMax = 0.8f;
+    explosionEmitter.sizeStart = 0.08f;
+    explosionEmitter.sizeEnd = 0.0f;
+    explosionEmitter.gravity = Vec2(0, -1.0f);
+    explosionEmitter.rotationSpeedMin = -5.0f;
+    explosionEmitter.rotationSpeedMax = 5.0f;
+
+    engine.physics.onGroundHit = (GameObject* obj) {
+        if (obj.rigidbody && !obj.rigidbody.isStatic)
+        {
+            explosionEmitter.position = Vec2(obj.transform.position.x, -0.4f);
+            explosionEmitter.burst(20);
+        }
+    };
+
     auto texture = engine.loadTexture("test_sprite.ppm");
     auto ground = engine.createGameObject(Vec2(0, -0.5f), Vec2(1.8f, 0.2f));
 
@@ -61,6 +86,11 @@ unittest
 
         engine.physics.update(deltaTime);
 
+        foreach (emitter; engine.particleEmitters)
+        {
+            emitter.update(deltaTime);
+        }
+
         clearColor(0.1f, 0.1f, 0.1f, 1.0f);
         clear(BufferBit.Color);
 
@@ -75,6 +105,11 @@ unittest
                 else
                     engine.renderer.drawRect(obj.transform, obj.color);
             }
+        }
+
+        foreach (emitter; engine.particleEmitters)
+        {
+            engine.renderer.drawParticles(*emitter);
         }
 
         swapBuffers(engine.window);
