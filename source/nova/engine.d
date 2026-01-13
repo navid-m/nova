@@ -16,6 +16,177 @@ struct Vec2
 }
 
 /** 
+ * Input state for keyboard and mouse.
+ */
+struct Input
+{
+    bool[512] keys;
+    bool[512] keysPressed;
+    bool[512] keysReleased;
+    bool[8] mouseButtons;
+    bool[8] mousePressed;
+    bool[8] mouseReleased;
+    Vec2 mousePos;
+    Vec2 mouseDelta;
+    Vec2 scrollDelta;
+
+    void update()
+    {
+        foreach (i; 0 .. 512)
+        {
+            keysPressed[i] = false;
+            keysReleased[i] = false;
+        }
+        foreach (i; 0 .. 8)
+        {
+            mousePressed[i] = false;
+            mouseReleased[i] = false;
+        }
+        scrollDelta = Vec2(0, 0);
+        mouseDelta = Vec2(0, 0);
+    }
+
+    bool isKeyDown(int key)
+    {
+        return keys[key];
+    }
+
+    bool isKeyPressed(int key)
+    {
+        return keysPressed[key];
+    }
+
+    bool isKeyReleased(int key)
+    {
+        return keysReleased[key];
+    }
+
+    bool isMouseDown(int button)
+    {
+        return mouseButtons[button];
+    }
+
+    bool isMousePressed(int button)
+    {
+        return mousePressed[button];
+    }
+
+    bool isMouseReleased(int button)
+    {
+        return mouseReleased[button];
+    }
+}
+
+/** 
+ * Common key constants for easier input handling.
+ */
+enum Key
+{
+    Space = 32,
+    Apostrophe = 39,
+    Comma = 44,
+    Minus = 45,
+    Period = 46,
+    Slash = 47,
+    Num0 = 48,
+    Num1 = 49,
+    Num2 = 50,
+    Num3 = 51,
+    Num4 = 52,
+    Num5 = 53,
+    Num6 = 54,
+    Num7 = 55,
+    Num8 = 56,
+    Num9 = 57,
+    Semicolon = 59,
+    Equal = 61,
+    A = 65,
+    B = 66,
+    C = 67,
+    D = 68,
+    E = 69,
+    F = 70,
+    G = 71,
+    H = 72,
+    I = 73,
+    J = 74,
+    K = 75,
+    L = 76,
+    M = 77,
+    N = 78,
+    O = 79,
+    P = 80,
+    Q = 81,
+    R = 82,
+    S = 83,
+    T = 84,
+    U = 85,
+    V = 86,
+    W = 87,
+    X = 88,
+    Y = 89,
+    Z = 90,
+    LeftBracket = 91,
+    Backslash = 92,
+    RightBracket = 93,
+    GraveAccent = 96,
+    Escape = 256,
+    Enter = 257,
+    Tab = 258,
+    Backspace = 259,
+    Insert = 260,
+    Delete = 261,
+    Right = 262,
+    Left = 263,
+    Down = 264,
+    Up = 265,
+    PageUp = 266,
+    PageDown = 267,
+    Home = 268,
+    End = 269,
+    CapsLock = 280,
+    ScrollLock = 281,
+    NumLock = 282,
+    PrintScreen = 283,
+    Pause = 284,
+    F1 = 290,
+    F2 = 291,
+    F3 = 292,
+    F4 = 293,
+    F5 = 294,
+    F6 = 295,
+    F7 = 296,
+    F8 = 297,
+    F9 = 298,
+    F10 = 299,
+    F11 = 300,
+    F12 = 301,
+    LeftShift = 340,
+    LeftControl = 341,
+    LeftAlt = 342,
+    LeftSuper = 343,
+    RightShift = 344,
+    RightControl = 345,
+    RightAlt = 346,
+    RightSuper = 347
+}
+
+/** 
+ * Mouse button constants.
+ */
+enum Mouse
+{
+    Left = 0,
+    Right = 1,
+    Middle = 2,
+    Button4 = 3,
+    Button5 = 4,
+    Button6 = 5,
+    Button7 = 6,
+    Button8 = 7
+}
+
+/** 
  * Some RGBA colour.
  */
 struct Color
@@ -96,6 +267,82 @@ struct GameObject
     Sprite* sprite;
     Color color = Color(1, 1, 1, 1);
     bool active = true;
+}
+
+extern (C) void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) nothrow
+{
+    try
+    {
+        Nova* engine = cast(Nova*) glfwGetWindowUserPointer(window);
+        if (key >= 0 && key < 512)
+        {
+            if (action == GLFW_PRESS)
+            {
+                engine.input.keys[key] = true;
+                engine.input.keysPressed[key] = true;
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                engine.input.keys[key] = false;
+                engine.input.keysReleased[key] = true;
+            }
+        }
+    }
+    catch (Exception)
+    {
+    }
+}
+
+extern (C) void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) nothrow
+{
+    try
+    {
+        Nova* engine = cast(Nova*) glfwGetWindowUserPointer(window);
+        if (button >= 0 && button < 8)
+        {
+            if (action == GLFW_PRESS)
+            {
+                engine.input.mouseButtons[button] = true;
+                engine.input.mousePressed[button] = true;
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                engine.input.mouseButtons[button] = false;
+                engine.input.mouseReleased[button] = true;
+            }
+        }
+    }
+    catch (Exception)
+    {
+    }
+}
+
+extern (C) void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) nothrow
+{
+    try
+    {
+        Nova* engine = cast(Nova*) glfwGetWindowUserPointer(window);
+        Vec2 newPos = Vec2(cast(float) xpos, cast(float) ypos);
+        engine.input.mouseDelta = Vec2(newPos.x - engine.lastMousePos.x,
+                newPos.y - engine.lastMousePos.y);
+        engine.input.mousePos = newPos;
+        engine.lastMousePos = newPos;
+    }
+    catch (Exception)
+    {
+    }
+}
+
+extern (C) void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) nothrow
+{
+    try
+    {
+        Nova* engine = cast(Nova*) glfwGetWindowUserPointer(window);
+        engine.input.scrollDelta = Vec2(cast(float) xoffset, cast(float) yoffset);
+    }
+    catch (Exception)
+    {
+    }
 }
 
 /** 
@@ -464,6 +711,8 @@ struct Nova
     GameObject*[] gameObjects;
     Texture*[] textures;
     double lastTime;
+    Input input;
+    Vec2 lastMousePos;
 
     /** 
      * Load a texture from a simple PPM file.
@@ -582,6 +831,12 @@ struct Nova
         }
 
         glfwMakeContextCurrent(window);
+        glfwSetWindowUserPointer(window, &this);
+
+        glfwSetKeyCallback(window, &keyCallback);
+        glfwSetMouseButtonCallback(window, &mouseButtonCallback);
+        glfwSetCursorPosCallback(window, &cursorPosCallback);
+        glfwSetScrollCallback(window, &scrollCallback);
 
         GLSupport glSupport = loadOpenGL();
         if (glSupport == GLSupport.noLibrary)
@@ -597,6 +852,11 @@ struct Nova
         renderer.initialize();
         lastTime = glfwGetTime();
         running = true;
+
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        lastMousePos = Vec2(cast(float) x, cast(float) y);
+        input.mousePos = lastMousePos;
     }
 
     /** 
@@ -675,6 +935,7 @@ struct Nova
             lastTime = currentTime;
 
             glfwPollEvents();
+            input.update();
 
             physics.update(deltaTime);
 
@@ -696,6 +957,46 @@ struct Nova
 
             glfwSwapBuffers(window);
         }
+    }
+
+    /** 
+     * Get the input state for this frame.
+     *
+     * Returns: Reference to the input system
+     */
+    ref Input getInput()
+    {
+        return input;
+    }
+
+    /** 
+     * Convert screen coordinates to world coordinates.
+     *
+     * Params:
+     *   screenPos = Position in screen coordinates (pixels)
+     *
+     * Returns: Position in world coordinates
+     */
+    Vec2 screenToWorld(Vec2 screenPos)
+    {
+        float aspect = 1920.0f / 1080.0f;
+        return Vec2((screenPos.x / 1920.0f - 0.5f) * 2.0f * aspect,
+                -(screenPos.y / 1080.0f - 0.5f) * 2.0f);
+    }
+
+    /** 
+     * Convert world coordinates to screen coordinates.
+     *
+     * Params:
+     *   worldPos = Position in world coordinates
+     *
+     * Returns: Position in screen coordinates (pixels)
+     */
+    Vec2 worldToScreen(Vec2 worldPos)
+    {
+        float aspect = 1920.0f / 1080.0f;
+        return Vec2((worldPos.x / aspect / 2.0f + 0.5f) * 1920.0f,
+                (-worldPos.y / 2.0f + 0.5f) * 1080.0f);
     }
 
     /** 

@@ -1,6 +1,7 @@
 module nova;
 
 public import nova.engine;
+import std.math : abs;
 
 unittest
 {
@@ -37,4 +38,41 @@ unittest
 
     engine.run();
     engine.cleanup();
+}
+
+unittest
+{
+    Input input;
+
+    assert(!input.isKeyDown(Key.W));
+    assert(!input.isKeyPressed(Key.W));
+    assert(!input.isMouseDown(Mouse.Left));
+
+    input.keys[Key.W] = true;
+    input.keysPressed[Key.W] = true;
+    assert(input.isKeyDown(Key.W));
+    assert(input.isKeyPressed(Key.W));
+
+    input.update();
+    assert(input.isKeyDown(Key.W));
+    assert(!input.isKeyPressed(Key.W));
+
+    input.mouseButtons[Mouse.Left] = true;
+    input.mousePressed[Mouse.Left] = true;
+    input.mousePos = Vec2(100, 200);
+
+    assert(input.isMouseDown(Mouse.Left));
+    assert(input.isMousePressed(Mouse.Left));
+    assert(input.mousePos.x == 100);
+    assert(input.mousePos.y == 200);
+
+    Vec2 screenPos = Vec2(960, 540);
+    float aspect = 1920.0f / 1080.0f;
+    Vec2 expectedWorld = Vec2(0, 0);
+
+    Vec2 worldPos = Vec2((screenPos.x / 1920.0f - 0.5f) * 2.0f * aspect,
+            -(screenPos.y / 1080.0f - 0.5f) * 2.0f);
+
+    assert(abs(worldPos.x - expectedWorld.x) < 0.001f);
+    assert(abs(worldPos.y - expectedWorld.y) < 0.001f);
 }
