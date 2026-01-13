@@ -330,7 +330,7 @@ struct Physics
 }
 
 /** 
- * The Nova Game Engine.
+ * The engine instance.
  */
 struct Nova
 {
