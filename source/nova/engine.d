@@ -232,6 +232,35 @@ struct Sprite
     SpriteFrame frame = SpriteFrame(0, 0, 1, 1);
 }
 
+/**
+ * An animation sequence.
+ */
+struct Animation
+{
+    SpriteFrame[] frames;
+    float frameDuration = 0.1f;
+    bool loop = true;
+}
+
+/**
+ * Component for handling animations.
+ */
+struct Animator
+{
+    Animation* currentAnimation;
+    float timer = 0;
+    int currentFrameIndex = 0;
+    bool playing = false;
+
+    void play(Animation* animation)
+    {
+        currentAnimation = animation;
+        currentFrameIndex = 0;
+        timer = 0;
+        playing = true;
+    }
+}
+
 /** 
  * A transformation between two 2D vectors.
  */
@@ -309,6 +338,49 @@ interface ISystem
 }
 
 /**
+ * System for updating animations.
+ */
+class AnimationSystem : ISystem
+{
+    Scene scene;
+
+    this(Scene s)
+    {
+        scene = s;
+    }
+
+    void update(float dt)
+    {
+        foreach (obj; scene.gameObjects)
+        {
+            auto animator = obj.getComponent!Animator;
+            auto sprite = obj.sprite;
+
+            if (animator && sprite && animator.playing && animator.currentAnimation)
+            {
+                animator.timer += dt;
+                if (animator.timer >= animator.currentAnimation.frameDuration)
+                {
+                    animator.timer = 0;
+                    animator.currentFrameIndex++;
+                    if (animator.currentFrameIndex >= animator.currentAnimation.frames.length)
+                    {
+                        if (animator.currentAnimation.loop)
+                            animator.currentFrameIndex = 0;
+                        else
+                        {
+                            animator.currentFrameIndex = cast(int) animator.currentAnimation.frames.length - 1;
+                            animator.playing = false;
+                        }
+                    }
+                    sprite.frame = animator.currentAnimation.frames[animator.currentFrameIndex];
+                }
+            }
+        }
+    }
+}
+
+/**
  * A scene containing game objects and systems.
  */
 class Scene
@@ -317,6 +389,11 @@ class Scene
     ParticleEmitter*[] particleEmitters;
     Physics physics;
     ISystem[] systems;
+
+    this()
+    {
+        systems ~= new AnimationSystem(this);
+    }
 
     void update(float dt)
     {
@@ -1206,6 +1283,28 @@ struct Nova
     {
         return SpriteFrame(cast(float) x / texWidth, cast(float) y / texHeight,
                 cast(float) width / texWidth, cast(float) height / texHeight);
+    }
+
+    /**
+     * Create an animation from a grid spritesheet.
+     */
+    Animation* createGridAnimation(Texture* texture, int columns, int rows, float frameDuration)
+    {
+        Animation* anim = new Animation();
+        anim.frameDuration = frameDuration;
+
+        int frameWidth = texture.width / columns;
+        int frameHeight = texture.height / rows;
+
+        for (int y = 0; y < rows; y++)
+        {
+            for (int x = 0; x < columns; x++)
+            {
+                anim.frames ~= createFrame(x * frameWidth, y * frameHeight, frameWidth,
+                        frameHeight, texture.width, texture.height);
+            }
+        }
+        return anim;
     }
 
     /** 
