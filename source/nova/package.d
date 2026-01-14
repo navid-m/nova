@@ -154,19 +154,19 @@ unittest
             if (obj.active)
             {
                 if (obj.sprite)
-                    engine.renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
+                    engine.renderer.drawSprite(obj.transform, *obj.sprite, obj.color, engine.activeScene.camera);
                 else if (obj.text)
-                    engine.renderer.drawText(obj.transform, *obj.text);
+                    engine.renderer.drawText(obj.transform, *obj.text, engine.activeScene.camera);
                 else if (obj.collider && obj.collider.type == Collider.Type.Circle)
-                    engine.renderer.drawCircle(obj.transform, obj.color);
+                    engine.renderer.drawCircle(obj.transform, obj.color, engine.activeScene.camera);
                 else
-                    engine.renderer.drawRect(obj.transform, obj.color);
+                    engine.renderer.drawRect(obj.transform, obj.color, engine.activeScene.camera);
             }
         }
 
         foreach (emitter; engine.particleEmitters)
         {
-            engine.renderer.drawParticles(*emitter);
+            engine.renderer.drawParticles(*emitter, engine.activeScene.camera);
         }
 
         swapBuffers(engine.window);

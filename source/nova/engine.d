@@ -333,6 +333,52 @@ struct GameObject
 }
 
 /**
+ * Camera system for controlling the view.
+ */
+struct Camera
+{
+    Vec2 position = Vec2(0, 0);
+    float zoom = 1.0f;
+    GameObject* target;
+    float lerpSpeed = 5.0f;
+    
+    float shakeDuration = 0.0f;
+    float shakeMagnitude = 0.0f;
+    Vec2 shakeOffset = Vec2(0, 0);
+
+    void follow(GameObject* target)
+    {
+        this.target = target;
+    }
+
+    void shake(float duration, float magnitude)
+    {
+        shakeDuration = duration;
+        shakeMagnitude = magnitude;
+    }
+
+    void update(float dt)
+    {
+        if (target)
+        {
+            position.x += (target.transform.position.x - position.x) * lerpSpeed * dt;
+            position.y += (target.transform.position.y - position.y) * lerpSpeed * dt;
+        }
+
+        if (shakeDuration > 0)
+        {
+            shakeDuration -= dt;
+            shakeOffset.x = uniform(-shakeMagnitude, shakeMagnitude);
+            shakeOffset.y = uniform(-shakeMagnitude, shakeMagnitude);
+        }
+        else
+        {
+            shakeOffset = Vec2(0, 0);
+        }
+    }
+}
+
+/**
  * Interface for systems.
  */
 interface ISystem
@@ -393,6 +439,7 @@ class Scene
     ParticleEmitter*[] particleEmitters;
     Physics physics;
     ISystem[] systems;
+    Camera camera;
 
     this()
     {
@@ -401,6 +448,7 @@ class Scene
 
     void update(float dt)
     {
+        camera.update(dt);
         physics.update(dt);
 
         foreach (sys; systems)
@@ -844,14 +892,18 @@ struct Renderer
      *   t = The transform 
      *   c = The colour of the circle in ARGB format
      */
-    void drawCircle(Transform t, Color c)
+    void drawCircle(Transform t, Color c, Camera cam)
     {
         glUseProgram(shaderProgram);
 
         float aspect = NovaConfiguration.xDims / NovaConfiguration.yDims;
+        float zoom = cam.zoom;
+        float tx = (t.position.x - cam.position.x + cam.shakeOffset.x) * zoom;
+        float ty = (t.position.y - cam.position.y + cam.shakeOffset.y) * zoom;
+
         float[16] matrix = [
-            t.scale.x / aspect, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0,
-            t.position.x, t.position.y, 0, 1
+            (t.scale.x * zoom) / aspect, 0, 0, 0, 0, t.scale.y * zoom, 0, 0, 0, 0, 1, 0,
+            tx, ty, 0, 1
         ];
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
@@ -868,13 +920,17 @@ struct Renderer
      *   t = The transform
      *   c = The colour of the rectangle in ARGB format
      */
-    void drawRect(Transform t, Color c)
+    void drawRect(Transform t, Color c, Camera cam)
     {
         glUseProgram(shaderProgram);
 
+        float zoom = cam.zoom;
+        float tx = (t.position.x - cam.position.x + cam.shakeOffset.x) * zoom;
+        float ty = (t.position.y - cam.position.y + cam.shakeOffset.y) * zoom;
+
         float[16] matrix = [
-            t.scale.x, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0, t.position.x,
-            t.position.y, 0, 1
+            t.scale.x * zoom, 0, 0, 0, 0, t.scale.y * zoom, 0, 0, 0, 0, 1, 0, tx,
+            ty, 0, 1
         ];
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
@@ -884,7 +940,7 @@ struct Renderer
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
 
-    void drawText(Transform t, Text txt)
+    void drawText(Transform t, Text txt, Camera cam)
     {
         if (!txt.font)
             return;
@@ -895,9 +951,10 @@ struct Renderer
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(textVAO);
 
-        float x = t.position.x;
-        float y = t.position.y;
-        float scale = t.scale.x;
+        float zoom = cam.zoom;
+        float x = (t.position.x - cam.position.x + cam.shakeOffset.x) * zoom;
+        float y = (t.position.y - cam.position.y + cam.shakeOffset.y) * zoom;
+        float scale = t.scale.x * zoom;
 
         string renderContent = txt.content;
         if (txt.typewriter)
@@ -954,7 +1011,7 @@ struct Renderer
      *   sprite = The sprite to render
      *   c = The color tint
      */
-    void drawSprite(Transform t, Sprite sprite, Color c)
+    void drawSprite(Transform t, Sprite sprite, Color c, Camera cam)
     {
         if (!sprite.texture)
             return;
@@ -962,9 +1019,13 @@ struct Renderer
         glUseProgram(spriteShader);
         glBindTexture(GL_TEXTURE_2D, sprite.texture.id);
 
+        float zoom = cam.zoom;
+        float tx = (t.position.x - cam.position.x + cam.shakeOffset.x) * zoom;
+        float ty = (t.position.y - cam.position.y + cam.shakeOffset.y) * zoom;
+
         float[16] matrix = [
-            t.scale.x, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0, t.position.x,
-            t.position.y, 0, 1
+            t.scale.x * zoom, 0, 0, 0, 0, t.scale.y * zoom, 0, 0, 0, 0, 1, 0, tx,
+            ty, 0, 1
         ];
 
         float[] vertices = [
@@ -991,7 +1052,7 @@ struct Renderer
      * Params:
      *   emitter = The particle emitter
      */
-    void drawParticles(ParticleEmitter emitter)
+    void drawParticles(ParticleEmitter emitter, Camera cam)
     {
         foreach (p; emitter.particles)
         {
@@ -1000,7 +1061,7 @@ struct Renderer
                 Transform t;
                 t.position = p.position;
                 t.scale = Vec2(p.size, p.size);
-                drawRect(t, p.color);
+                drawRect(t, p.color, cam);
             }
         }
     }
@@ -1651,11 +1712,13 @@ struct Nova
                         if (obj.active)
                         {
                             if (obj.sprite)
-                                renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
+                                renderer.drawSprite(obj.transform, *obj.sprite, obj.color, activeScene.camera);
+                            else if (obj.text)
+                                renderer.drawText(obj.transform, *obj.text, activeScene.camera);
                             else if (obj.collider && obj.collider.type == Collider.Type.Circle)
-                                renderer.drawCircle(obj.transform, obj.color);
+                                renderer.drawCircle(obj.transform, obj.color, activeScene.camera);
                             else
-                                renderer.drawRect(obj.transform, obj.color);
+                                renderer.drawRect(obj.transform, obj.color, activeScene.camera);
                         }
                     }
                 }
@@ -1685,8 +1748,17 @@ struct Nova
      */
     Vec2 screenToWorld(Vec2 screenPos)
     {
-        return Vec2((screenPos.x / NovaConfiguration.xDims - 0.5f) * 2.0f,
-                -(screenPos.y / NovaConfiguration.yDims - 0.5f) * 2.0f);
+        float x = (screenPos.x / NovaConfiguration.xDims - 0.5f) * 2.0f;
+        float y = -(screenPos.y / NovaConfiguration.yDims - 0.5f) * 2.0f;
+
+        if (activeScene)
+        {
+            float zoom = activeScene.camera.zoom;
+            x = x / zoom + activeScene.camera.position.x - activeScene.camera.shakeOffset.x;
+            y = y / zoom + activeScene.camera.position.y - activeScene.camera.shakeOffset.y;
+        }
+
+        return Vec2(x, y);
     }
 
     /** 
@@ -1699,8 +1771,18 @@ struct Nova
      */
     Vec2 worldToScreen(Vec2 worldPos)
     {
-        return Vec2((worldPos.x / 2.0f + 0.5f) * NovaConfiguration.xDims,
-                (-worldPos.y / 2.0f + 0.5f) * NovaConfiguration.yDims);
+        float x = worldPos.x;
+        float y = worldPos.y;
+
+        if (activeScene)
+        {
+            float zoom = activeScene.camera.zoom;
+            x = (x - activeScene.camera.position.x + activeScene.camera.shakeOffset.x) * zoom;
+            y = (y - activeScene.camera.position.y + activeScene.camera.shakeOffset.y) * zoom;
+        }
+
+        return Vec2((x / 2.0f + 0.5f) * NovaConfiguration.xDims,
+                (-y / 2.0f + 0.5f) * NovaConfiguration.yDims);
     }
 
     /** 
