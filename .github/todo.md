@@ -23,12 +23,6 @@
    - No polygon collision detection
    - No collision layers/masks
 
-6. Camera System: Missing features:
-   - Camera entity with position/rotation/zoom
-   - Camera following
-   - Multiple viewports
-   - Screen shake effects
-
 7. Asset Management System: The engine lacks:
    - Resource loading/unloading system
    - Asset caching
