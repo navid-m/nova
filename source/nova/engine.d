@@ -1327,8 +1327,8 @@ struct Nova
             float deltaTime = cast(float)(currentTime - lastTime);
             lastTime = currentTime;
 
-            glfwPollEvents();
             input.update();
+            glfwPollEvents();
 
             if (activeScene)
                 activeScene.update(deltaTime);

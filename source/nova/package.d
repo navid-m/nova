@@ -4,6 +4,42 @@ public import nova.engine;
 
 import std.math : abs;
 
+struct PlayerControl
+{
+    float speed = 2.0f;
+}
+
+class PlayerSystem : ISystem
+{
+    Input* input;
+    Scene scene;
+
+    this(Scene s, Input* i)
+    {
+        scene = s;
+        input = i;
+    }
+
+    void update(float dt)
+    {
+        foreach (obj; scene.gameObjects)
+        {
+            auto control = obj.getComponent!PlayerControl;
+            if (control)
+            {
+                if (input.isKeyDown(Key.W))
+                    obj.transform.position.y += control.speed * dt;
+                if (input.isKeyDown(Key.S))
+                    obj.transform.position.y -= control.speed * dt;
+                if (input.isKeyDown(Key.A))
+                    obj.transform.position.x -= control.speed * dt;
+                if (input.isKeyDown(Key.D))
+                    obj.transform.position.x += control.speed * dt;
+            }
+        }
+    }
+}
+
 unittest
 {
     Nova engine;
@@ -68,10 +104,24 @@ unittest
         float deltaTime = cast(float)(currentTime - engine.lastTime);
         engine.lastTime = currentTime;
 
+        engine.input.update();
         pollEvents();
 
         if (getKey(engine.window, Key.Escape) == KeyEvent.Press)
             engine.running = false;
+
+        if (engine.input.isKeyPressed(Key.Q))
+        {
+            import std.stdio;
+
+            auto scene2 = new Scene();
+            engine.loadScene(scene2);
+
+            auto player = engine.createGameObject(Vec2(0, 0), Vec2(0.2f, 0.2f));
+            player.color = Color(0, 1, 0, 1);
+            player.addComponent(new PlayerControl(1.5f));
+            scene2.systems ~= new PlayerSystem(scene2, &engine.input);
+        }
 
         if (getMouseButton(engine.window, Mouse.Left) == KeyEvent.Press)
         {
@@ -84,12 +134,8 @@ unittest
             engine.addCollider(newBall, Collider.Type.Circle, Vec2(0.05f, 0.05f));
         }
 
-        engine.physics.update(deltaTime);
-
-        foreach (emitter; engine.particleEmitters)
-        {
-            emitter.update(deltaTime);
-        }
+        if (engine.activeScene)
+            engine.activeScene.update(deltaTime);
 
         clearColor(0.1f, 0.1f, 0.1f, 1.0f);
         clear(BufferBit.Color);
