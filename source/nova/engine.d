@@ -1494,16 +1494,23 @@ struct Nova
         return music;
     }
 
-    void playSound(Sound* sound, int loops = 0)
+    void playSound(Sound* sound, int loops = 0, float volume = 0.5f)
     {
         if (sound && sound.chunk)
-            Mix_PlayChannel(-1, sound.chunk, loops);
+        {
+            int channel = Mix_PlayChannel(-1, sound.chunk, loops);
+            if (channel != -1)
+                Mix_Volume(channel, cast(int)(clamp(volume, 0.0f, 1.0f) * 128));
+        }
     }
 
-    void playMusic(Music* music, bool loop = true)
+    void playMusic(Music* music, bool loop = true, float volume = 0.5f)
     {
         if (music && music.music)
+        {
             Mix_PlayMusic(music.music, loop ? -1 : 0);
+            Mix_VolumeMusic(cast(int)(clamp(volume, 0.0f, 1.0f) * 128));
+        }
     }
 
     void pauseMusic()
