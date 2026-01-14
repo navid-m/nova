@@ -14,9 +14,6 @@
    - No collision layers/masks
 
 7. Asset Management System: The engine lacks:
-   - Resource loading/unloading system
-   - Asset caching
-   - Asset lifecycle management
    - Support for more texture formats (only PPM currently supported)
 
 10. Networking Capabilities: The engine lacks:
