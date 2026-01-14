@@ -11,9 +11,7 @@
    - Animation blending or transitions
 
 3. Scene Management System: Missing features include:
-   - Scene switching/loading
    - Scene hierarchy management
-   - Entity-component-system (ECS) architecture
    - Scene serialization/deserialization
 
 4. Advanced UI/HUD System: The engine lacks:
