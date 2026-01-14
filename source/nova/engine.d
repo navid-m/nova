@@ -279,6 +279,55 @@ struct GameObject
     Sprite* sprite;
     Color color = Color(1, 1, 1, 1);
     bool active = true;
+    void*[TypeInfo] genericComponents;
+
+    /**
+     * Add a component to the game object.
+     */
+    void addComponent(T)(T* component)
+    {
+        genericComponents[typeid(T)] = cast(void*) component;
+    }
+
+    /**
+     * Get a component from the game object.
+     */
+    T* getComponent(T)()
+    {
+        if (typeid(T) in genericComponents)
+            return cast(T*) genericComponents[typeid(T)];
+        return null;
+    }
+}
+
+/**
+ * Interface for systems.
+ */
+interface ISystem
+{
+    void update(float dt);
+}
+
+/**
+ * A scene containing game objects and systems.
+ */
+class Scene
+{
+    GameObject*[] gameObjects;
+    ParticleEmitter*[] particleEmitters;
+    Physics physics;
+    ISystem[] systems;
+
+    void update(float dt)
+    {
+        physics.update(dt);
+
+        foreach (sys; systems)
+            sys.update(dt);
+
+        foreach (emitter; particleEmitters)
+            emitter.update(dt);
+    }
 }
 
 /** 
@@ -1002,13 +1051,36 @@ struct Nova
     GLFWwindow* window;
     bool running;
     Renderer renderer;
-    Physics physics;
-    GameObject*[] gameObjects;
-    ParticleEmitter*[] particleEmitters;
+
+    Scene activeScene;
+
+    @property ref Physics physics()
+    {
+        return activeScene.physics;
+    }
+
+    @property ref GameObject*[] gameObjects()
+    {
+        return activeScene.gameObjects;
+    }
+
+    @property ref ParticleEmitter*[] particleEmitters()
+    {
+        return activeScene.particleEmitters;
+    }
+
     Texture*[] textures;
     double lastTime;
     Input input;
     Vec2 lastMousePos;
+
+    /**
+     * Load a new scene.
+     */
+    void loadScene(Scene scene)
+    {
+        activeScene = scene;
+    }
 
     /** 
      * Create a particle emitter.
@@ -1024,7 +1096,8 @@ struct Nova
         ParticleEmitter* emitter = new ParticleEmitter();
         emitter.position = pos;
         emitter.particles.length = maxParticles;
-        particleEmitters ~= emitter;
+        if (activeScene)
+            activeScene.particleEmitters ~= emitter;
         return emitter;
     }
 
@@ -1127,6 +1200,8 @@ struct Nova
      */
     void initialize(string title, int xDims = 1920, int yDims = 1080)
     {
+        activeScene = new Scene();
+
         NovaConfiguration.xDims = xDims;
         NovaConfiguration.yDims = yDims;
 
@@ -1190,7 +1265,8 @@ struct Nova
         GameObject* obj = new GameObject();
         obj.transform.position = pos;
         obj.transform.scale = scale;
-        gameObjects ~= obj;
+        if (activeScene)
+            activeScene.gameObjects ~= obj;
         return obj;
     }
 
@@ -1254,21 +1330,25 @@ struct Nova
             glfwPollEvents();
             input.update();
 
-            physics.update(deltaTime);
+            if (activeScene)
+                activeScene.update(deltaTime);
 
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            foreach (obj; gameObjects)
+            if (activeScene)
             {
-                if (obj.active)
+                foreach (obj; activeScene.gameObjects)
                 {
-                    if (obj.sprite)
-                        renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
-                    else if (obj.collider && obj.collider.type == Collider.Type.Circle)
-                        renderer.drawCircle(obj.transform, obj.color);
-                    else
-                        renderer.drawRect(obj.transform, obj.color);
+                    if (obj.active)
+                    {
+                        if (obj.sprite)
+                            renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
+                        else if (obj.collider && obj.collider.type == Collider.Type.Circle)
+                            renderer.drawCircle(obj.transform, obj.color);
+                        else
+                            renderer.drawRect(obj.transform, obj.color);
+                    }
                 }
             }
 
