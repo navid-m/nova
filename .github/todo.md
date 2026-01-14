@@ -12,9 +12,7 @@
    - Scene serialization/deserialization
 
 4. Advanced UI/HUD System: The engine lacks:
-   - UI elements (buttons, text boxes, panels)
    - Layout managers
-   - Text rendering system
    - UI event handling
    - HUD components
 
