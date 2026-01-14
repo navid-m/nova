@@ -3,11 +3,14 @@ module nova.engine;
 import bindbc.glfw;
 import bindbc.opengl;
 import bindbc.freetype;
+import bindbc.sdl;
+import sdl_mixer;
 import std.stdio;
 import std.math;
 import std.algorithm;
 import std.string;
 import std.random;
+import std.conv;
 
 /** 
  * Some two dimensional vector. 
@@ -217,6 +220,22 @@ struct Texture
     int width, height;
 }
 
+/**
+ * A sound effect.
+ */
+struct Sound
+{
+    Mix_Chunk* chunk;
+}
+
+/**
+ * Background music.
+ */
+struct Music
+{
+    Mix_Music* music;
+}
+
 /** 
  * A sprite frame from a spritesheet.
  */
@@ -341,7 +360,7 @@ struct Camera
     float zoom = 1.0f;
     GameObject* target;
     float lerpSpeed = 5.0f;
-    
+
     float shakeDuration = 0.0f;
     float shakeMagnitude = 0.0f;
     Vec2 shakeOffset = Vec2(0, 0);
@@ -935,8 +954,8 @@ struct Renderer
         float ty = (t.position.y - cam.position.y + cam.shakeOffset.y) * zoom;
 
         float[16] matrix = [
-            (t.scale.x * zoom) / aspect, 0, 0, 0, 0, t.scale.y * zoom, 0, 0, 0, 0, 1, 0,
-            tx, ty, 0, 1
+            (t.scale.x * zoom) / aspect, 0, 0, 0, 0, t.scale.y * zoom, 0, 0, 0,
+            0, 1, 0, tx, ty, 0, 1
         ];
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1,
@@ -1384,6 +1403,8 @@ struct Nova
         return activeScene.particleEmitters;
     }
 
+    Sound*[] sounds;
+    Music*[] musicTracks;
     Texture*[] textures;
     double lastTime;
     Input input;
@@ -1414,6 +1435,71 @@ struct Nova
         if (activeScene)
             activeScene.particleEmitters ~= emitter;
         return emitter;
+    }
+
+    /** 
+     * Load a sound effect.
+     */
+    Sound* loadSound(string filename)
+    {
+        import std.string : toStringz;
+
+        Mix_Chunk* chunk = Mix_LoadWAV(filename.toStringz);
+        if (!chunk)
+        {
+            writeln("Failed to load sound: " ~ filename);
+            writeln("Mix_Error: " ~ to!string(Mix_GetError()));
+            return null;
+        }
+        Sound* s = new Sound(chunk);
+        sounds ~= s;
+        return s;
+    }
+
+    /** 
+     * Load a music track.
+     */
+    Music* loadMusic(string filename)
+    {
+        import std.string : toStringz;
+
+        Mix_Music* m = Mix_LoadMUS(filename.toStringz);
+        if (!m)
+        {
+            writeln("Failed to load music: " ~ filename);
+            writeln("Mix_Error: " ~ to!string(Mix_GetError()));
+            return null;
+        }
+        Music* music = new Music(m);
+        musicTracks ~= music;
+        return music;
+    }
+
+    void playSound(Sound* sound, int loops = 0)
+    {
+        if (sound && sound.chunk)
+            Mix_PlayChannel(-1, sound.chunk, loops);
+    }
+
+    void playMusic(Music* music, bool loop = true)
+    {
+        if (music && music.music)
+            Mix_PlayMusic(music.music, loop ? -1 : 0);
+    }
+
+    void pauseMusic()
+    {
+        Mix_PauseMusic();
+    }
+
+    void resumeMusic()
+    {
+        Mix_ResumeMusic();
+    }
+
+    void stopMusic()
+    {
+        Mix_HaltMusic();
     }
 
     /** 
@@ -1592,6 +1678,30 @@ struct Nova
         NovaConfiguration.yDims = yDims;
         NovaConfiguration.targetFPS = targetFPS;
 
+        if (loadSDL() != sdlSupport)
+        {
+            writeln("Could not load SDL");
+            return;
+        }
+
+        if (loadSDLMixer() != sdlMixerSupport)
+        {
+            writeln("Could not load SDL Mixer");
+            return;
+        }
+
+        if (SDL_Init(SDL_INIT_AUDIO) < 0)
+        {
+            writeln("SDL could not initialize. SDL Error: " ~ to!string(SDL_GetError()));
+            return;
+        }
+
+        if (Mix_OpenAudio(44_100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        {
+            writeln("SDL_mixer could not initialize. SDL_mixer Error: " ~ to!string(Mix_GetError()));
+            return;
+        }
+
         if (loadGLFW() != glfwSupport)
         {
             writeln("Could not load GLFW");
@@ -1745,7 +1855,8 @@ struct Nova
                         if (obj.active)
                         {
                             if (obj.sprite)
-                                renderer.drawSprite(obj.transform, *obj.sprite, obj.color, activeScene.camera);
+                                renderer.drawSprite(obj.transform,
+                                        *obj.sprite, obj.color, activeScene.camera);
                             else if (obj.text)
                                 renderer.drawText(obj.transform, *obj.text, activeScene.camera);
                             else if (obj.collider && obj.collider.type == Collider.Type.Circle)
@@ -1823,6 +1934,14 @@ struct Nova
      */
     void cleanup()
     {
+        foreach (s; sounds)
+            Mix_FreeChunk(s.chunk);
+        foreach (m; musicTracks)
+            Mix_FreeMusic(m.music);
+
+        Mix_Quit();
+        SDL_Quit();
+
         glfwDestroyWindow(window);
         glfwTerminate();
     }
