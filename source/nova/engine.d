@@ -47,35 +47,12 @@ struct Input
         mouseDelta = Vec2(0, 0);
     }
 
-    bool isKeyDown(int key)
-    {
-        return keys[key];
-    }
-
-    bool isKeyPressed(int key)
-    {
-        return keysPressed[key];
-    }
-
-    bool isKeyReleased(int key)
-    {
-        return keysReleased[key];
-    }
-
-    bool isMouseDown(int button)
-    {
-        return mouseButtons[button];
-    }
-
-    bool isMousePressed(int button)
-    {
-        return mousePressed[button];
-    }
-
-    bool isMouseReleased(int button)
-    {
-        return mouseReleased[button];
-    }
+    bool isKeyDown(int key) => keys[key];
+    bool isKeyPressed(int key) => keysPressed[key];
+    bool isKeyReleased(int key) => keysReleased[key];
+    bool isMouseDown(int button) => mouseButtons[button];
+    bool isMousePressed(int button) => mousePressed[button];
+    bool isMouseReleased(int button) => mouseReleased[button];
 }
 
 /** 
@@ -369,7 +346,8 @@ class AnimationSystem : ISystem
                             animator.currentFrameIndex = 0;
                         else
                         {
-                            animator.currentFrameIndex = cast(int) animator.currentAnimation.frames.length - 1;
+                            animator.currentFrameIndex = cast(
+                                    int) animator.currentAnimation.frames.length - 1;
                             animator.playing = false;
                         }
                     }
@@ -1300,8 +1278,8 @@ struct Nova
         {
             for (int x = 0; x < columns; x++)
             {
-                anim.frames ~= createFrame(x * frameWidth, y * frameHeight, frameWidth,
-                        frameHeight, texture.width, texture.height);
+                anim.frames ~= createFrame(x * frameWidth, y * frameHeight,
+                        frameWidth, frameHeight, texture.width, texture.height);
             }
         }
         return anim;
