@@ -477,6 +477,9 @@ extern (C) void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) 
     }
     catch (Exception)
     {
+        import std.conv;
+
+        writeln("Cursor position callback failed (" ~ to!string(xpos) ~ "x" ~ to!string(ypos) ~ ")");
     }
 }
 
@@ -489,6 +492,9 @@ extern (C) void scrollCallback(GLFWwindow* window, double xoffset, double yoffse
     }
     catch (Exception)
     {
+        import std.conv;
+
+        writeln("Scroll callback failed (" ~ to!string(xoffset) ~ "x" ~ to!string(yoffset) ~ ")");
     }
 }
 
