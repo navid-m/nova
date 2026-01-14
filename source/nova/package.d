@@ -47,6 +47,8 @@ unittest
 
     auto explosionEmitter = engine.createParticleEmitter(Vec2(0, 0), 200);
 
+    engine.toggleFpsCounter(FPSCounterPosition.TopRight);
+
     explosionEmitter.active = true;
     explosionEmitter.emissionRate = 0;
     explosionEmitter.loop = false;
@@ -114,6 +116,8 @@ unittest
         double currentTime = getTime();
         float deltaTime = cast(float)(currentTime - engine.lastTime);
         engine.lastTime = currentTime;
+        if (deltaTime > 0)
+            engine.currentFps = 1.0f / deltaTime;
 
         engine.input.update();
         pollEvents();
@@ -188,6 +192,11 @@ unittest
         {
             engine.renderer.drawParticles(*emitter, engine.activeScene.camera);
         }
+
+        if (engine.activeScene)
+            engine.drawFps(engine.activeScene.camera);
+        else
+            engine.drawFps(Camera());
 
         swapBuffers(engine.window);
     }

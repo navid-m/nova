@@ -11,6 +11,7 @@ import std.algorithm;
 import std.string;
 import std.random;
 import std.conv;
+import std.format;
 
 /** 
  * Some two dimensional vector. 
@@ -201,6 +202,18 @@ enum Mouse
     Button6 = 5,
     Button7 = 6,
     Button8 = 7
+}
+
+/**
+ * FPS Counter position.
+ */
+enum FPSCounterPosition
+{
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight,
+    Center
 }
 
 /** 
@@ -468,7 +481,7 @@ class ParticleTrailSystem : ISystem
         scene = s;
     }
 
-    void update(float dt)
+    void update(float _)
     {
         foreach (obj; scene.gameObjects)
         {
@@ -1405,9 +1418,16 @@ struct Nova
     Sound*[] sounds;
     Music*[] musicTracks;
     Texture*[] textures;
+    Font*[] loadedFonts;
     double lastTime;
     Input input;
     Vec2 lastMousePos;
+
+    bool showFps = false;
+    FPSCounterPosition fpsPos = FPSCounterPosition.TopRight;
+    Text* fpsText;
+    float currentFps = 0.0f;
+    float fpsUpdateTimer = 0.0f;
 
     /**
      * Load a new scene.
@@ -1619,6 +1639,7 @@ struct Nova
         }
 
         FT_Done_Face(face);
+        loadedFonts ~= font;
         return font;
     }
 
@@ -1823,6 +1844,73 @@ struct Nova
         obj.sprite.frame = frame;
     }
 
+    /**
+     * Toggle the FPS counter.
+     *
+     * Params:
+     *   pos = The position of the FPS counter
+     */
+    void toggleFpsCounter(FPSCounterPosition pos)
+    {
+        showFps = !showFps;
+        fpsPos = pos;
+
+        if (showFps && !fpsText)
+        {
+            fpsText = new Text();
+            fpsText.color = Color(1.0f, 0.33f, 0.0f, 1.0f);
+            fpsText.content = "FPS: 0";
+        }
+    }
+
+    void drawFps(Camera cam)
+    {
+        if (!showFps || loadedFonts.length == 0)
+            return;
+
+        if (!fpsText.font)
+            fpsText.font = loadedFonts[0];
+
+        fpsText.content = format("FPS: %d", cast(int) currentFps);
+
+        float zoom = cam.zoom;
+        float aspect = NovaConfiguration.xDims / NovaConfiguration.yDims;
+        float halfWidth = aspect / zoom;
+        float halfHeight = 1.0f / zoom;
+
+        float x = cam.position.x;
+        float y = cam.position.y;
+
+        Transform t;
+        float margin = 0.1f / zoom;
+
+        switch (fpsPos)
+        {
+        case FPSCounterPosition.TopLeft:
+            t.position = Vec2(x - halfWidth + margin,
+                    y + halfHeight - margin);
+            break;
+        case FPSCounterPosition.TopRight:
+            t.position = Vec2(x + halfWidth - margin - 0.3f / zoom, y + halfHeight - margin);
+            break;
+        case FPSCounterPosition.BottomLeft:
+            t.position = Vec2(x - halfWidth + margin, y - halfHeight + margin);
+            break;
+        case FPSCounterPosition.BottomRight:
+            t.position = Vec2(x + halfWidth - margin - 0.3f / zoom, y - halfHeight + margin);
+            break;
+        case FPSCounterPosition.Center:
+            t.position = Vec2(x, y);
+            break;
+        default:
+            break;
+        }
+
+        t.scale = Vec2(0.0015f / zoom, 0.0015f / zoom);
+
+        renderer.drawText(t, *fpsText, cam);
+    }
+
     /** 
      * Run the game.
      */
@@ -1835,6 +1923,7 @@ struct Nova
             if (currentTime - lastTime >= 1.0 / NovaConfiguration.targetFPS)
             {
                 float deltaTime = cast(float)(currentTime - lastTime);
+                currentFps = 1.0f / deltaTime;
                 lastTime = currentTime;
 
                 input.update();
@@ -1863,6 +1952,12 @@ struct Nova
                                 renderer.drawRect(obj.transform, obj.color, activeScene.camera);
                         }
                     }
+
+                    drawFps(activeScene.camera);
+                }
+                else
+                {
+                    drawFps(Camera());
                 }
 
                 glfwSwapBuffers(window);
