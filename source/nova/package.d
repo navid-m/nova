@@ -70,7 +70,7 @@ unittest
         }
     };
 
-    auto texture = engine.loadTexture("test_sprite.ppm");
+    auto texture = engine.loadTexture("test_resources/test_sprite.ppm");
     auto ground = engine.createGameObject(Vec2(0, -0.5f), Vec2(1.8f, 0.2f));
 
     ground.color = Color(0.5f, 0.5f, 0.5f, 1);
@@ -98,7 +98,7 @@ unittest
         engine.addSprite(frameObj, texture, frame);
     }
 
-    auto font = engine.loadFont("DejaVuSans.ttf", 48);
+    auto font = engine.loadFont("test_resources/DejaVuSans.ttf", 48);
     if (font)
     {
         auto textObj = engine.createGameObject(Vec2(-0.9f, 0.8f), Vec2(0.002f, 0.002f));
@@ -154,11 +154,13 @@ unittest
             if (obj.active)
             {
                 if (obj.sprite)
-                    engine.renderer.drawSprite(obj.transform, *obj.sprite, obj.color, engine.activeScene.camera);
+                    engine.renderer.drawSprite(obj.transform, *obj.sprite,
+                            obj.color, engine.activeScene.camera);
                 else if (obj.text)
                     engine.renderer.drawText(obj.transform, *obj.text, engine.activeScene.camera);
                 else if (obj.collider && obj.collider.type == Collider.Type.Circle)
-                    engine.renderer.drawCircle(obj.transform, obj.color, engine.activeScene.camera);
+                    engine.renderer.drawCircle(obj.transform, obj.color,
+                            engine.activeScene.camera);
                 else
                     engine.renderer.drawRect(obj.transform, obj.color, engine.activeScene.camera);
             }
