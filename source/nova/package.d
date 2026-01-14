@@ -4,44 +4,44 @@ public import nova.engine;
 
 import std.math : abs;
 
-struct PlayerControl
+unittest
 {
-    float speed = 2.0f;
-}
-
-class PlayerSystem : ISystem
-{
-    Input* input;
-    Scene scene;
-
-    this(Scene s, Input* i)
+    struct PlayerControl
     {
-        scene = s;
-        input = i;
+        float speed = 2.0f;
     }
 
-    void update(float dt)
+    class PlayerSystem : ISystem
     {
-        foreach (obj; scene.gameObjects)
+        Input* input;
+        Scene scene;
+
+        this(Scene s, Input* i)
         {
-            auto control = obj.getComponent!PlayerControl;
-            if (control)
+            scene = s;
+            input = i;
+        }
+
+        void update(float dt)
+        {
+            foreach (obj; scene.gameObjects)
             {
-                if (input.isKeyDown(Key.W))
-                    obj.transform.position.y += control.speed * dt;
-                if (input.isKeyDown(Key.S))
-                    obj.transform.position.y -= control.speed * dt;
-                if (input.isKeyDown(Key.A))
-                    obj.transform.position.x -= control.speed * dt;
-                if (input.isKeyDown(Key.D))
-                    obj.transform.position.x += control.speed * dt;
+                auto control = obj.getComponent!PlayerControl;
+                if (control)
+                {
+                    if (input.isKeyDown(Key.W))
+                        obj.transform.position.y += control.speed * dt;
+                    if (input.isKeyDown(Key.S))
+                        obj.transform.position.y -= control.speed * dt;
+                    if (input.isKeyDown(Key.A))
+                        obj.transform.position.x -= control.speed * dt;
+                    if (input.isKeyDown(Key.D))
+                        obj.transform.position.x += control.speed * dt;
+                }
             }
         }
     }
-}
 
-unittest
-{
     Nova engine;
     engine.initialize("Nova Game Engine", 1920, 1080);
 
