@@ -494,7 +494,7 @@ extern (C) void scrollCallback(GLFWwindow* window, double xoffset, double yoffse
     {
         import std.conv;
 
-        writeln("Scroll callback failed (" ~ to!string(xoffset) ~ "x" ~ to!string(yoffset) ~ ")");
+        writeln("Scroll callback failed (" ~ to!string(xoffset) ~ ", " ~ to!string(yoffset) ~ ")");
     }
 }
 
