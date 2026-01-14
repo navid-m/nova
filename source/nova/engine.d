@@ -360,7 +360,6 @@ struct Camera
     float zoom = 1.0f;
     GameObject* target;
     float lerpSpeed = 5.0f;
-
     float shakeDuration = 0.0f;
     float shakeMagnitude = 0.0f;
     Vec2 shakeOffset = Vec2(0, 0);
