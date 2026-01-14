@@ -43,7 +43,7 @@ unittest
     }
 
     Nova engine;
-    engine.initialize("Nova Game Engine", 1920, 1080);
+    engine.initialize("Nova Game Engine", 1920, 1080, 90);
 
     auto explosionEmitter = engine.createParticleEmitter(Vec2(0, 0), 200);
 

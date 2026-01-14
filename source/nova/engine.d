@@ -1261,6 +1261,7 @@ static class NovaConfiguration
 {
     static float xDims = 1920;
     static float yDims = 1080;
+    static int targetFPS = 60;
 }
 
 /** 
@@ -1489,12 +1490,13 @@ struct Nova
      * Params:
      *   title = The window title 
      */
-    void initialize(string title, int xDims = 1920, int yDims = 1080)
+    void initialize(string title, int xDims = 1920, int yDims = 1080, int targetFPS = 60)
     {
         activeScene = new Scene();
 
         NovaConfiguration.xDims = xDims;
         NovaConfiguration.yDims = yDims;
+        NovaConfiguration.targetFPS = targetFPS;
 
         if (loadGLFW() != glfwSupport)
         {
@@ -1627,35 +1629,39 @@ struct Nova
         while (running && !glfwWindowShouldClose(window))
         {
             double currentTime = glfwGetTime();
-            float deltaTime = cast(float)(currentTime - lastTime);
-            lastTime = currentTime;
 
-            input.update();
-            glfwPollEvents();
-
-            if (activeScene)
-                activeScene.update(deltaTime);
-
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            if (activeScene)
+            if (currentTime - lastTime >= 1.0 / NovaConfiguration.targetFPS)
             {
-                foreach (obj; activeScene.gameObjects)
+                float deltaTime = cast(float)(currentTime - lastTime);
+                lastTime = currentTime;
+
+                input.update();
+                glfwPollEvents();
+
+                if (activeScene)
+                    activeScene.update(deltaTime);
+
+                glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+
+                if (activeScene)
                 {
-                    if (obj.active)
+                    foreach (obj; activeScene.gameObjects)
                     {
-                        if (obj.sprite)
-                            renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
-                        else if (obj.collider && obj.collider.type == Collider.Type.Circle)
-                            renderer.drawCircle(obj.transform, obj.color);
-                        else
-                            renderer.drawRect(obj.transform, obj.color);
+                        if (obj.active)
+                        {
+                            if (obj.sprite)
+                                renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
+                            else if (obj.collider && obj.collider.type == Collider.Type.Circle)
+                                renderer.drawCircle(obj.transform, obj.color);
+                            else
+                                renderer.drawRect(obj.transform, obj.color);
+                        }
                     }
                 }
-            }
 
-            glfwSwapBuffers(window);
+                glfwSwapBuffers(window);
+            }
         }
     }
 
