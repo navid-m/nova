@@ -146,7 +146,6 @@ unittest
 
     Vec2 screenPos = Vec2(960, 540);
     Vec2 expectedWorld = Vec2(0, 0);
-
     Vec2 worldPos = Vec2((screenPos.x / 1920.0f - 0.5f) * 2.0f,
             -(screenPos.y / 1080.0f - 0.5f) * 2.0f);
 
