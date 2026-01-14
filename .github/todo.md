@@ -5,9 +5,6 @@
    - Audio file loading (no functions for loading WAV, MP3, OGG, etc.)
 
 2. Animation System: The engine lacks:
-   - Sprite animation capabilities
-   - Animation controllers
-   - Frame-by-frame animation system
    - Animation blending or transitions
 
 3. Scene Management System: Missing features include:
