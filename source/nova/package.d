@@ -99,6 +99,8 @@ unittest
     }
 
     auto font = engine.loadFont("test_resources/DejaVuSans.ttf", 48);
+    auto spawnSound = engine.loadSound("test_resources/spawn.mp3");
+
     if (font)
     {
         auto textObj = engine.createGameObject(Vec2(-0.9f, 0.8f), Vec2(0.002f, 0.002f));
@@ -155,6 +157,8 @@ unittest
             newBall.color = Color(0, 0, 1, 1);
             engine.addRigidBody(newBall, 0.3f);
             engine.addCollider(newBall, Collider.Type.Circle, Vec2(0.05f, 0.05f));
+            if (spawnSound)
+                engine.playSound(spawnSound);
         }
 
         if (engine.activeScene)
