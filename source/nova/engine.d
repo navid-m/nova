@@ -1370,7 +1370,7 @@ struct Physics
 /** 
  * The global game configuration state.
  */
-static class NovaConfiguration
+private static class NovaConfiguration
 {
     static float xDims = 1920;
     static float yDims = 1080;
