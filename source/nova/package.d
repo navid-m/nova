@@ -98,6 +98,15 @@ unittest
         engine.addSprite(frameObj, texture, frame);
     }
 
+    auto font = engine.loadFont("DejaVuSans.ttf", 48);
+    if (font)
+    {
+        auto textObj = engine.createGameObject(Vec2(-0.9f, 0.8f), Vec2(0.002f, 0.002f));
+        textObj.text = new Text("Hello Nova Engine!", font);
+        textObj.text.typewriter = true;
+        textObj.text.color = Color(1, 1, 1, 1);
+    }
+
     while (engine.running && !shouldClose(engine.window))
     {
         double currentTime = getTime();
@@ -146,6 +155,8 @@ unittest
             {
                 if (obj.sprite)
                     engine.renderer.drawSprite(obj.transform, *obj.sprite, obj.color);
+                else if (obj.text)
+                    engine.renderer.drawText(obj.transform, *obj.text);
                 else if (obj.collider && obj.collider.type == Collider.Type.Circle)
                     engine.renderer.drawCircle(obj.transform, obj.color);
                 else

@@ -2,6 +2,7 @@ module nova.engine;
 
 import bindbc.glfw;
 import bindbc.opengl;
+import bindbc.freetype;
 import std.stdio;
 import std.math;
 import std.algorithm;
@@ -53,6 +54,30 @@ struct Input
     bool isMouseDown(int button) => mouseButtons[button];
     bool isMousePressed(int button) => mousePressed[button];
     bool isMouseReleased(int button) => mouseReleased[button];
+}
+
+struct Character
+{
+    uint textureID;
+    int[2] size;
+    int[2] bearing;
+    uint advance;
+}
+
+struct Font
+{
+    Character[dchar] characters;
+}
+
+struct Text
+{
+    string content;
+    Font* font;
+    Color color = Color(0, 0, 0, 1);
+    bool typewriter = false;
+    float typewriterDelay = 0.05f;
+    float typewriterTimer = 0.0f;
+    int visibleChars = 0;
 }
 
 /** 
@@ -283,6 +308,7 @@ struct GameObject
     RigidBody* rigidbody;
     Collider* collider;
     Sprite* sprite;
+    Text* text;
     Color color = Color(1, 1, 1, 1);
     bool active = true;
     void*[TypeInfo] genericComponents;
@@ -382,6 +408,20 @@ class Scene
 
         foreach (emitter; particleEmitters)
             emitter.update(dt);
+
+        foreach (obj; gameObjects)
+        {
+            if (obj.active && obj.text && obj.text.typewriter)
+            {
+                obj.text.typewriterTimer += dt;
+                if (obj.text.typewriterTimer >= obj.text.typewriterDelay)
+                {
+                    obj.text.typewriterTimer = 0;
+                    if (obj.text.visibleChars < obj.text.content.length)
+                        obj.text.visibleChars++;
+                }
+            }
+        }
     }
 }
 
@@ -625,8 +665,8 @@ extern (C) void scrollCallback(GLFWwindow* window, double xoffset, double yoffse
  */
 struct Renderer
 {
-    uint shaderProgram, spriteShader, rectVAO, rectVBO, circleVAO, circleVBO,
-        spriteVAO, spriteVBO;
+    uint shaderProgram, spriteShader, textShader, rectVAO, rectVBO, circleVAO,
+        circleVBO, spriteVAO, spriteVBO, textVAO, textVBO;
 
     /** 
      * Initialize the renderer, this must be called prior to the usage of the renderer
@@ -697,6 +737,43 @@ struct Renderer
         glAttachShader(spriteShader, sfs);
         glLinkProgram(spriteShader);
 
+        const char* textVertexShader = `
+            #version 330 core
+            layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>
+            out vec2 TexCoords;
+            uniform mat4 transform;
+            void main() {
+                gl_Position = transform * vec4(vertex.xy, 0.0, 1.0);
+                TexCoords = vertex.zw;
+            }`;
+
+        const char* textFragmentShader = `
+            #version 330 core
+            in vec2 TexCoords;
+            out vec4 FragColor;
+            uniform sampler2D text;
+            uniform vec4 color;
+            void main() {
+                vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
+                FragColor = color * sampled;
+            }`;
+
+        uint tvs = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(tvs, 1, &textVertexShader, null);
+        glCompileShader(tvs);
+
+        uint tfs = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(tfs, 1, &textFragmentShader, null);
+        glCompileShader(tfs);
+
+        textShader = glCreateProgram();
+        glAttachShader(textShader, tvs);
+        glAttachShader(textShader, tfs);
+        glLinkProgram(textShader);
+
+        glDeleteShader(tvs);
+        glDeleteShader(tfs);
+
         glDeleteShader(vs);
         glDeleteShader(fs);
         glDeleteShader(svs);
@@ -748,6 +825,16 @@ struct Renderer
                 circleVertices.ptr, GL_STATIC_DRAW);
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * float.sizeof, cast(void*) 0);
         glEnableVertexAttribArray(0);
+
+        glGenVertexArrays(1, &textVAO);
+        glGenBuffers(1, &textVBO);
+        glBindVertexArray(textVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+        glBufferData(GL_ARRAY_BUFFER, float.sizeof * 6 * 4, null, GL_DYNAMIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * float.sizeof, cast(void*) 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
     }
 
     /** 
@@ -795,6 +882,68 @@ struct Renderer
         glUniform4f(glGetUniformLocation(shaderProgram, "color"), c.r, c.g, c.b, c.a);
         glBindVertexArray(rectVAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    }
+
+    void drawText(Transform t, Text txt)
+    {
+        if (!txt.font)
+            return;
+
+        glUseProgram(textShader);
+        glUniform4f(glGetUniformLocation(textShader, "color"), txt.color.r,
+                txt.color.g, txt.color.b, txt.color.a);
+        glActiveTexture(GL_TEXTURE0);
+        glBindVertexArray(textVAO);
+
+        float x = t.position.x;
+        float y = t.position.y;
+        float scale = t.scale.x;
+
+        string renderContent = txt.content;
+        if (txt.typewriter)
+        {
+            if (txt.visibleChars > renderContent.length)
+                renderContent = txt.content;
+            else
+                renderContent = txt.content[0 .. txt.visibleChars];
+        }
+
+        float aspect = NovaConfiguration.xDims / NovaConfiguration.yDims;
+        float[16] matrix = [
+            1.0f / aspect, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+        ];
+        glUniformMatrix4fv(glGetUniformLocation(textShader, "transform"), 1, GL_FALSE, matrix.ptr);
+
+        foreach (dchar c; renderContent)
+        {
+            if (c !in txt.font.characters)
+                continue;
+
+            Character ch = txt.font.characters[c];
+
+            float xpos = x + ch.bearing[0] * scale;
+            float ypos = y - (ch.size[1] - ch.bearing[1]) * scale;
+
+            float w = ch.size[0] * scale;
+            float h = ch.size[1] * scale;
+
+            float[4][6] vertices = [
+                [xpos, ypos + h, 0.0f, 0.0f], [xpos, ypos, 0.0f, 1.0f],
+                [xpos + w, ypos, 1.0f, 1.0f], [xpos, ypos + h, 0.0f, 0.0f],
+                [xpos + w, ypos, 1.0f, 1.0f], [xpos + w, ypos + h, 1.0f, 0.0f]
+            ];
+
+            glBindTexture(GL_TEXTURE_2D, ch.textureID);
+            glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.sizeof, vertices.ptr);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            x += (ch.advance >> 6) * scale;
+        }
+        glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     /** 
@@ -1122,6 +1271,7 @@ struct Nova
     GLFWwindow* window;
     bool running;
     Renderer renderer;
+    FT_Library ft;
 
     Scene activeScene;
 
@@ -1244,6 +1394,55 @@ struct Nova
         }
     }
 
+    Font* loadFont(string filename, uint fontSize = 48)
+    {
+        FT_Face face;
+        import std.string : toStringz;
+
+        if (FT_New_Face(ft, filename.toStringz, 0, &face))
+        {
+            writeln("Failed to load font: " ~ filename);
+            return null;
+        }
+
+        FT_Set_Pixel_Sizes(face, 0, fontSize);
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        Font* font = new Font();
+
+        for (dchar c = 0; c < 128; c++)
+        {
+            if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+            {
+                writeln("Failed to load Glyph");
+                continue;
+            }
+
+            uint texture;
+            glGenTextures(1, &texture);
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face.glyph.bitmap.width,
+                    face.glyph.bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face.glyph.bitmap.buffer);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            Character character = {
+                textureID: texture, size: [
+                    face.glyph.bitmap.width, face.glyph.bitmap.rows
+                ], bearing: [face.glyph.bitmap_left, face.glyph.bitmap_top],
+                advance: cast(uint) face.glyph.advance.x
+            };
+            font.characters[c] = character;
+        }
+
+        FT_Done_Face(face);
+        return font;
+    }
+
     /** 
      * Create a spritesheet frame.
      *
@@ -1301,6 +1500,18 @@ struct Nova
         if (loadGLFW() != glfwSupport)
         {
             writeln("Could not load GLFW");
+            return;
+        }
+
+        if (loadFreeType() != ftSupport)
+        {
+            writeln("Could not load FreeType");
+            return;
+        }
+
+        if (FT_Init_FreeType(&ft))
+        {
+            writeln("Could not init FreeType Library");
             return;
         }
 

@@ -5,7 +5,8 @@
 	"copyright": "Copyright © 2026, Navid",
 	"dependencies": {
 		"bindbc-glfw": "~>1.1.2",
-		"bindbc-opengl": "~>1.1.0"
+		"bindbc-opengl": "~>1.1.0",
+		"bindbc-freetype": "~>1.0.0"
 	},
 	"description": "2D game engine with a simple surface API",
 	"license": "GPL-3.0-only",
