@@ -635,7 +635,7 @@ struct Renderer
     {
         glUseProgram(shaderProgram);
 
-        float aspect = 1920.0f / 1080.0f;
+        float aspect = GameConfiguration.xDims / GameConfiguration.yDims;
         float[16] matrix = [
             t.scale.x / aspect, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0,
             t.position.x, t.position.y, 0, 1
@@ -981,6 +981,15 @@ struct Physics
 }
 
 /** 
+ * The global game configuration state.
+ */
+static class GameConfiguration
+{
+    static float xDims = 1920;
+    static float yDims = 1080;
+}
+
+/** 
  * The engine instance.
  */
 struct Nova
@@ -1111,8 +1120,11 @@ struct Nova
      * Params:
      *   title = The window title 
      */
-    void initialize(string title)
+    void initialize(string title, int xDims = 1920, int yDims = 1080)
     {
+        GameConfiguration.xDims = xDims;
+        GameConfiguration.yDims = yDims;
+
         if (loadGLFW() != glfwSupport)
         {
             writeln("Could not load GLFW");
@@ -1123,7 +1135,7 @@ struct Nova
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-        window = glfwCreateWindow(1920, 1080, title.ptr, null, null);
+        window = glfwCreateWindow(xDims, yDims, title.ptr, null, null);
         if (!window)
         {
             glfwTerminate();
@@ -1145,7 +1157,7 @@ struct Nova
             return;
         }
 
-        glViewport(0, 0, 1920, 1080);
+        glViewport(0, 0, xDims, yDims);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1279,9 +1291,8 @@ struct Nova
      */
     Vec2 screenToWorld(Vec2 screenPos)
     {
-        float aspect = 1920.0f / 1080.0f;
-        return Vec2((screenPos.x / 1920.0f - 0.5f) * 2.0f,
-                -(screenPos.y / 1080.0f - 0.5f) * 2.0f);
+        return Vec2((screenPos.x / GameConfiguration.xDims - 0.5f) * 2.0f,
+                -(screenPos.y / GameConfiguration.yDims - 0.5f) * 2.0f);
     }
 
     /** 
@@ -1294,9 +1305,8 @@ struct Nova
      */
     Vec2 worldToScreen(Vec2 worldPos)
     {
-        float aspect = 1920.0f / 1080.0f;
-        return Vec2((worldPos.x / 2.0f + 0.5f) * 1920.0f,
-                (-worldPos.y / 2.0f + 0.5f) * 1080.0f);
+        return Vec2((worldPos.x / 2.0f + 0.5f) * GameConfiguration.xDims,
+                (-worldPos.y / 2.0f + 0.5f) * GameConfiguration.yDims);
     }
 
     /** 

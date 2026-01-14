@@ -7,7 +7,7 @@ import std.math : abs;
 unittest
 {
     Nova engine;
-    engine.initialize("Nova Game Engine");
+    engine.initialize("Nova Game Engine", 1920, 1080);
 
     auto explosionEmitter = engine.createParticleEmitter(Vec2(0, 0), 200);
 
