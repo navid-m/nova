@@ -513,6 +513,14 @@ extern (C) void mouseButtonCallback(GLFWwindow* window, int button, int action, 
     }
 }
 
+/** 
+ * The cursor position callback function.
+ *
+ * Params:
+ *   window = The game window
+ *   xpos = X position of the cursor
+ *   ypos = Y position of the cursor
+ */
 extern (C) void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) nothrow
 {
     try
@@ -532,6 +540,14 @@ extern (C) void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) 
     }
 }
 
+/** 
+ * The scroll callback function.
+ *
+ * Params:
+ *   window = The game window
+ *   xoffset = X offset for scroll
+ *   yoffset = Y offset for scroll
+ */
 extern (C) void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) nothrow
 {
     try
