@@ -7,10 +7,6 @@
 2. Animation System: The engine lacks:
    - Animation blending or transitions
 
-3. Scene Management System: Missing features include:
-   - Scene hierarchy management
-   - Scene serialization/deserialization
-
 4. Advanced UI/HUD System: The engine lacks:
    - Layout managers
    - UI event handling
