@@ -19,11 +19,6 @@
    - Asset lifecycle management
    - Support for more texture formats (only PPM currently supported)
 
-8. Scripting System: Missing:
-   - Scripting interface (Lua, JavaScript, etc.)
-   - Event-driven programming model
-   - Component-based scripting
-
 10. Networking Capabilities: The engine lacks:
     - Client-server architecture
     - Network synchronization
