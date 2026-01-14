@@ -24,12 +24,6 @@
    - Event-driven programming model
    - Component-based scripting
 
-9. Particle System Enhancements: Current system is basic, missing:
-   - More complex particle behaviors
-   - Particle trails
-   - Advanced emission patterns
-   - Particle physics interactions
-
 10. Networking Capabilities: The engine lacks:
     - Client-server architecture
     - Network synchronization
