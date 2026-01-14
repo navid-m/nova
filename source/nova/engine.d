@@ -635,7 +635,7 @@ struct Renderer
     {
         glUseProgram(shaderProgram);
 
-        float aspect = GameConfiguration.xDims / GameConfiguration.yDims;
+        float aspect = NovaConfiguration.xDims / NovaConfiguration.yDims;
         float[16] matrix = [
             t.scale.x / aspect, 0, 0, 0, 0, t.scale.y, 0, 0, 0, 0, 1, 0,
             t.position.x, t.position.y, 0, 1
@@ -983,7 +983,7 @@ struct Physics
 /** 
  * The global game configuration state.
  */
-static class GameConfiguration
+static class NovaConfiguration
 {
     static float xDims = 1920;
     static float yDims = 1080;
@@ -1122,8 +1122,8 @@ struct Nova
      */
     void initialize(string title, int xDims = 1920, int yDims = 1080)
     {
-        GameConfiguration.xDims = xDims;
-        GameConfiguration.yDims = yDims;
+        NovaConfiguration.xDims = xDims;
+        NovaConfiguration.yDims = yDims;
 
         if (loadGLFW() != glfwSupport)
         {
@@ -1291,8 +1291,8 @@ struct Nova
      */
     Vec2 screenToWorld(Vec2 screenPos)
     {
-        return Vec2((screenPos.x / GameConfiguration.xDims - 0.5f) * 2.0f,
-                -(screenPos.y / GameConfiguration.yDims - 0.5f) * 2.0f);
+        return Vec2((screenPos.x / NovaConfiguration.xDims - 0.5f) * 2.0f,
+                -(screenPos.y / NovaConfiguration.yDims - 0.5f) * 2.0f);
     }
 
     /** 
@@ -1305,8 +1305,8 @@ struct Nova
      */
     Vec2 worldToScreen(Vec2 worldPos)
     {
-        return Vec2((worldPos.x / 2.0f + 0.5f) * GameConfiguration.xDims,
-                (-worldPos.y / 2.0f + 0.5f) * GameConfiguration.yDims);
+        return Vec2((worldPos.x / 2.0f + 0.5f) * NovaConfiguration.xDims,
+                (-worldPos.y / 2.0f + 0.5f) * NovaConfiguration.yDims);
     }
 
     /** 
