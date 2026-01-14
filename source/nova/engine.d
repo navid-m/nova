@@ -1272,7 +1272,6 @@ struct Nova
     bool running;
     Renderer renderer;
     FT_Library ft;
-
     Scene activeScene;
 
     @property ref Physics physics()
