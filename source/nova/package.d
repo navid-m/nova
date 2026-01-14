@@ -130,6 +130,20 @@ unittest
             player.color = Color(0, 1, 0, 1);
             player.addComponent(new PlayerControl(1.5f));
             scene2.systems ~= new PlayerSystem(scene2, &engine.input);
+
+            auto trailEmitter = engine.createParticleEmitter(Vec2(0, 0), 200);
+            trailEmitter.emissionRate = 60;
+            trailEmitter.lifetimeMin = 0.5f;
+            trailEmitter.lifetimeMax = 1.0f;
+            trailEmitter.sizeStart = 0.05f;
+            trailEmitter.sizeEnd = 0.0f;
+            trailEmitter.velocityMin = Vec2(-0.1f, -0.1f);
+            trailEmitter.velocityMax = Vec2(0.1f, 0.1f);
+            trailEmitter.colorStart = Color(0, 1, 0, 1);
+            trailEmitter.colorEnd = Color(0, 1, 0, 0);
+
+            player.addComponent(new ParticleTrail(trailEmitter));
+            scene2.systems ~= new ParticleTrailSystem(scene2);
         }
 
         if (getMouseButton(engine.window, Mouse.Left) == KeyEvent.Press)

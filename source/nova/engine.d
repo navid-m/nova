@@ -431,6 +431,39 @@ class AnimationSystem : ISystem
 }
 
 /**
+ * Component for particle trails.
+ */
+struct ParticleTrail
+{
+    ParticleEmitter* emitter;
+}
+
+/**
+ * System for updating particle trails.
+ */
+class ParticleTrailSystem : ISystem
+{
+    Scene scene;
+
+    this(Scene s)
+    {
+        scene = s;
+    }
+
+    void update(float dt)
+    {
+        foreach (obj; scene.gameObjects)
+        {
+            auto trail = obj.getComponent!ParticleTrail;
+            if (trail && trail.emitter)
+            {
+                trail.emitter.position = obj.transform.position;
+            }
+        }
+    }
+}
+
+/**
  * A scene containing game objects and systems.
  */
 class Scene
