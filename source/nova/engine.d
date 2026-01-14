@@ -768,7 +768,6 @@ struct ParticleEmitter
     bool loop = true;
     float rotationSpeedMin = 0;
     float rotationSpeedMax = 0;
-
     float emitTimer = 0;
 
     void update(float dt)
