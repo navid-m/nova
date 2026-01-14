@@ -1,9 +1,3 @@
-1. Audio System: There is no audio system implemented. The engine lacks:
-   - Sound effect playback
-   - Music playback
-   - Audio management
-   - Audio file loading (no functions for loading WAV, MP3, OGG, etc.)
-
 2. Animation System: The engine lacks:
    - Animation blending or transitions
 
