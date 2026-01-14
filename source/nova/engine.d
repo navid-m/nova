@@ -1733,7 +1733,6 @@ struct Nova
 
         glfwMakeContextCurrent(window);
         glfwSetWindowUserPointer(window, &this);
-
         glfwSetKeyCallback(window, &keyCallback);
         glfwSetMouseButtonCallback(window, &mouseButtonCallback);
         glfwSetCursorPosCallback(window, &cursorPosCallback);
