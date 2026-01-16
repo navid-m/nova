@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs - nova.engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="search_index.js"></script>
+    <style>
+        .highlight-result {
+            border: 2px solid #ef4444 !important;
+            background-color: rgba(239, 68, 68, 0.1) !important;
+            transition: all 0.5s ease-in-out;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'code-bg': '#0d1117',
+                        'card-bg': '#161b22',
+                        'border-color': '#30363d',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="mb-8">
+            <div class="bg-card-bg rounded-2xl p-8 shadow-2xl border border-border-color">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <a href="index.html" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors group">
+                        <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to Index
+                    </a>
+                    <div class="flex items-center gap-4">
+                        <label class="inline-flex items-center cursor-pointer group">
+                            <input type="checkbox" id="hide-private-functions-checkbox" class="sr-only peer" checked>
+                            <div class="relative w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <span class="ms-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors select-none">Hide Private Functions</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer group">
+                            <input type="checkbox" id="hide-private-fields-checkbox" class="sr-only peer" checked>
+                            <div class="relative w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <span class="ms-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors select-none">Hide Private Attributes</span>
+                        </label>
+                        <div class="relative w-64">
+                            <input type="text" id="global-search" placeholder="Search docs..." class="w-full bg-gray-900 border border-border-color rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 placeholder-gray-500">
+                            <div id="search-results" class="absolute z-50 w-full mt-2 bg-card-bg border border-border-color rounded-lg shadow-xl hidden max-h-96 overflow-y-auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-2">nova.engine</h1>
+            </div>
+        </header>
+
+        <main class="space-y-8">
+<section class="bg-card-bg rounded-xl shadow-lg border border-border-color overflow-hidden">
+<div class="p-6 space-y-6">
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Vec2" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Vec2
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Some two dimensional vector.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> x, y;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Input" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Input
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Input state for keyboard and mouse.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a>[512] keys;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a>[512] keysPressed;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a>[512] keysReleased;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a>[8] mouseButtons;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a>[8] mousePressed;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a>[8] mouseReleased;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> mousePos;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> mouseDelta;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> scrollDelta;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="Input.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Input.isKeyDown" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold">isKeyDown</span><span class="text-gray-500">(int key)</span>
+</div>
+</div>
+<div id="Input.isKeyPressed" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold">isKeyPressed</span><span class="text-gray-500">(int key)</span>
+</div>
+</div>
+<div id="Input.isKeyReleased" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold">isKeyReleased</span><span class="text-gray-500">(int key)</span>
+</div>
+</div>
+<div id="Input.isMouseDown" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold">isMouseDown</span><span class="text-gray-500">(int button)</span>
+</div>
+</div>
+<div id="Input.isMousePressed" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold">isMousePressed</span><span class="text-gray-500">(int button)</span>
+</div>
+</div>
+<div id="Input.isMouseReleased" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold">isMouseReleased</span><span class="text-gray-500">(int button)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Character" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Character
+</h3>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+uint textureID;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#int" class="text-blue-400 hover:text-blue-300 transition-colors">int</a>[2] size;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#int" class="text-blue-400 hover:text-blue-300 transition-colors">int</a>[2] bearing;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+uint advance;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Font" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Font
+</h3>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Character" class="text-blue-400 hover:text-blue-300 transition-colors">Character</a>[dchar] characters;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Text" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Text
+</h3>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/phobos/std_string.html" class="text-blue-400 hover:text-blue-300 transition-colors">string</a> content;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Font" class="text-blue-400 hover:text-blue-300 transition-colors">Font</a>* font;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a> color = <a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a>(0, 0, 0, 1);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> typewriter = false;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> typewriterDelay = 0.05f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> typewriterTimer = 0.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#int" class="text-blue-400 hover:text-blue-300 transition-colors">int</a> visibleChars = 0;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Color" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Color
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Some RGBA colour.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> r, g, b, a;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Texture" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Texture
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A texture resource.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+uint id;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#int" class="text-blue-400 hover:text-blue-300 transition-colors">int</a> width, height;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Sound" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Sound
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A sound effect.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+Mix_Chunk* chunk;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Music" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Music
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Background music.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+Mix_Music* music;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="SpriteFrame" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+SpriteFrame
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A sprite frame from a spritesheet.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> x, y, width, height;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Sprite" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Sprite
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A sprite component for rendering textures.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Texture" class="text-blue-400 hover:text-blue-300 transition-colors">Texture</a>* texture;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#SpriteFrame" class="text-blue-400 hover:text-blue-300 transition-colors">SpriteFrame</a> frame = <a href="nova_engine.html#SpriteFrame" class="text-blue-400 hover:text-blue-300 transition-colors">SpriteFrame</a>(0, 0, 1, 1);
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Animation" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Animation
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">An animation sequence.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#SpriteFrame" class="text-blue-400 hover:text-blue-300 transition-colors">SpriteFrame</a>[] frames;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> frameDuration = 0.1f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> loop = true;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Animator" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Animator
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Component for handling animations.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Animation" class="text-blue-400 hover:text-blue-300 transition-colors">Animation</a>* currentAnimation;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> timer = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#int" class="text-blue-400 hover:text-blue-300 transition-colors">int</a> currentFrameIndex = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> playing = false;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="Animator.play" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">play</span><span class="text-gray-500">(Animation* animation)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Transform" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Transform
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A transformation between two 2D vectors.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> position;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> rotation = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> scale = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(1, 1);
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="RigidBody" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+RigidBody
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Some rigid body in the physics world.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> velocity = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(0, 0);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> mass = 1;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> isStatic = false;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> restitution = 0.8f;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Collider" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Collider
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Some collider in the physics world.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+Type type;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> size;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="GameObject" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+GameObject
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">An object in the physics world.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Transform" class="text-blue-400 hover:text-blue-300 transition-colors">Transform</a> transform;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#RigidBody" class="text-blue-400 hover:text-blue-300 transition-colors">RigidBody</a>* rigidbody;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Collider" class="text-blue-400 hover:text-blue-300 transition-colors">Collider</a>* collider;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Sprite" class="text-blue-400 hover:text-blue-300 transition-colors">Sprite</a>* sprite;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Text" class="text-blue-400 hover:text-blue-300 transition-colors">Text</a>* text;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a> color = <a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a>(1, 1, 1, 1);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> active = true;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#void" class="text-blue-400 hover:text-blue-300 transition-colors">void</a>*[TypeInfo] genericComponents;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="GameObject.addComponent" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">addComponent</span><span class="text-gray-500">(T)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Add a component to the game object.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Camera" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Camera
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Camera system for controlling the view.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> position = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(0, 0);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> zoom = 1.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#GameObject" class="text-blue-400 hover:text-blue-300 transition-colors">GameObject</a>* target;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> lerpSpeed = 5.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> shakeDuration = 0.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> shakeMagnitude = 0.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> shakeOffset = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(0, 0);
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="Camera.follow" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">follow</span><span class="text-gray-500">(GameObject* target)</span>
+</div>
+</div>
+<div id="Camera.shake" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">shake</span><span class="text-gray-500">(float duration, float magnitude)</span>
+</div>
+</div>
+<div id="Camera.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">(float dt)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="ISystem" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">interface</span>
+ISystem
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Interface for systems.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="ISystem.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">(float dt)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="AnimationSystem" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">class</span>
+AnimationSystem
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">System for updating animations.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Scene" class="text-blue-400 hover:text-blue-300 transition-colors">Scene</a> scene;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="AnimationSystem.this" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400"></span> <span class="text-blue-400 font-semibold">this</span><span class="text-gray-500">(Scene s)</span>
+</div>
+</div>
+<div id="AnimationSystem.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">(float dt)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="ParticleTrail" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+ParticleTrail
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Component for particle trails.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#ParticleEmitter" class="text-blue-400 hover:text-blue-300 transition-colors">ParticleEmitter</a>* emitter;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="ParticleTrailSystem" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">class</span>
+ParticleTrailSystem
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">System for updating particle trails.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Scene" class="text-blue-400 hover:text-blue-300 transition-colors">Scene</a> scene;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="ParticleTrailSystem.this" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400"></span> <span class="text-blue-400 font-semibold">this</span><span class="text-gray-500">(Scene s)</span>
+</div>
+</div>
+<div id="ParticleTrailSystem.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">(float _)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Scene" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">class</span>
+Scene
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A scene containing game objects and systems.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#GameObject" class="text-blue-400 hover:text-blue-300 transition-colors">GameObject</a>*[] gameObjects;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#ParticleEmitter" class="text-blue-400 hover:text-blue-300 transition-colors">ParticleEmitter</a>*[] particleEmitters;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Physics" class="text-blue-400 hover:text-blue-300 transition-colors">Physics</a> physics;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#ISystem" class="text-blue-400 hover:text-blue-300 transition-colors">ISystem</a>[] systems;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Camera" class="text-blue-400 hover:text-blue-300 transition-colors">Camera</a> camera;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="Scene.this" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400"></span> <span class="text-blue-400 font-semibold">this</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Scene.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">(float dt)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Renderer" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Renderer
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">The main renderer of the game.</p>
+<p class="text-gray-300 leading-relaxed">This is the heart of any game built with Nova.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+circleVBO, spriteVAO, spriteVBO, textVAO, textVBO;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="Renderer.initialize" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">initialize</span><span class="text-gray-500">()</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Initialize the renderer, this must be called prior to the usage of the renderer</p>
+<p class="text-gray-300 leading-relaxed">at all.</p>
+</div>
+</div>
+<div id="Renderer.drawCircle" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">drawCircle</span><span class="text-gray-500">(Transform t, Color c, Camera cam)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Draw some circle via the renderer.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">t</td>
+<td class="py-2 px-4 text-gray-400 align-top">The transform</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">c</td>
+<td class="py-2 px-4 text-gray-400 align-top">The colour of the circle in ARGB format</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Renderer.drawRect" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">drawRect</span><span class="text-gray-500">(Transform t, Color c, Camera cam)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Draw some rectangle via the renderer.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">t</td>
+<td class="py-2 px-4 text-gray-400 align-top">The transform</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">c</td>
+<td class="py-2 px-4 text-gray-400 align-top">The colour of the rectangle in ARGB format</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Renderer.drawText" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">drawText</span><span class="text-gray-500">(Transform t, Text txt, Camera cam)</span>
+</div>
+</div>
+<div id="Renderer.drawSprite" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">drawSprite</span><span class="text-gray-500">(Transform t, Sprite sprite, Color c, Camera cam)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Draw a sprite with optional spritesheet frame.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">t</td>
+<td class="py-2 px-4 text-gray-400 align-top">The transform</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">sprite</td>
+<td class="py-2 px-4 text-gray-400 align-top">The sprite to render</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">c</td>
+<td class="py-2 px-4 text-gray-400 align-top">The color tint</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Renderer.drawParticles" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">drawParticles</span><span class="text-gray-500">(ParticleEmitter emitter, Camera cam)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Draw particles from an emitter.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">emitter</td>
+<td class="py-2 px-4 text-gray-400 align-top">The particle emitter</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Particle" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Particle
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A single particle.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> position;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> velocity;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a> color;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> size;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> life = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> startLife = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> rotation = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> rotationSpeed = 0;
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="ParticleEmitter" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+ParticleEmitter
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">A particle emitter system.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> position;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Particle" class="text-blue-400 hover:text-blue-300 transition-colors">Particle</a>[] particles;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> emissionRate = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> velocityMin = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(-1, -1);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> velocityMax = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(1, 1);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a> colorStart = <a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a>(1, 1, 1, 1);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a> colorEnd = <a href="nova_engine.html#Color" class="text-blue-400 hover:text-blue-300 transition-colors">Color</a>(1, 1, 1, 0);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> lifetimeMin = 1.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> lifetimeMax = 2.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> sizeStart = 0.1f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> sizeEnd = 0.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> gravity = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(0, 0);
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> active = true;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> loop = true;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> rotationSpeedMin = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> rotationSpeedMax = 0;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> emitTimer = 0;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="ParticleEmitter.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">(float dt)</span>
+</div>
+</div>
+<div id="ParticleEmitter.burst" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">burst</span><span class="text-gray-500">(int count)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Physics" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Physics
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">The physics engine.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#GameObject" class="text-blue-400 hover:text-blue-300 transition-colors">GameObject</a>*[] objects;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> gravity = <a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a>(0, -0.5f);
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="Physics.delegate" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">delegate</span><span class="text-gray-500">(GameObject* obj)</span>
+</div>
+</div>
+<div id="Physics.addObject" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">addObject</span><span class="text-gray-500">(GameObject* obj)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Add some object to the physics world.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">obj</td>
+<td class="py-2 px-4 text-gray-400 align-top">The object to add</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Physics.update" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">update</span><span class="text-gray-500">(float dt)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Update the physics loop.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">dt</td>
+<td class="py-2 px-4 text-gray-400 align-top">Delta time</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Physics.checkCollisions" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">checkCollisions</span><span class="text-gray-500">()</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Check for collisions in the physics world.</p>
+</div>
+</div>
+<div id="Physics.isColliding" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold">isColliding</span><span class="text-gray-500">(GameObject* a, GameObject* b)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Determine whether two game objects are colliding.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">a</td>
+<td class="py-2 px-4 text-gray-400 align-top">Object A</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">b</td>
+<td class="py-2 px-4 text-gray-400 align-top">Object B</td>
+</tr>
+</tbody></table>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> Whether or not they are colliding</div>
+</div>
+</div>
+<div id="Physics.resolveCollision" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">resolveCollision</span><span class="text-gray-500">(GameObject* a, GameObject* b)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Resolve a collision between two game objects.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">a</td>
+<td class="py-2 px-4 text-gray-400 align-top">Object A</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">b</td>
+<td class="py-2 px-4 text-gray-400 align-top">Object B</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Nova" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">struct</span>
+Nova
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">The engine instance.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Fields</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+GLFWwindow* window;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> running;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Renderer" class="text-blue-400 hover:text-blue-300 transition-colors">Renderer</a> renderer;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+FT_Library ft;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Scene" class="text-blue-400 hover:text-blue-300 transition-colors">Scene</a> activeScene;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Sound" class="text-blue-400 hover:text-blue-300 transition-colors">Sound</a>*[] sounds;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Music" class="text-blue-400 hover:text-blue-300 transition-colors">Music</a>*[] musicTracks;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Texture" class="text-blue-400 hover:text-blue-300 transition-colors">Texture</a>*[] textures;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Font" class="text-blue-400 hover:text-blue-300 transition-colors">Font</a>*[] loadedFonts;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#double" class="text-blue-400 hover:text-blue-300 transition-colors">double</a> lastTime;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Input" class="text-blue-400 hover:text-blue-300 transition-colors">Input</a> input;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Vec2" class="text-blue-400 hover:text-blue-300 transition-colors">Vec2</a> lastMousePos;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#bool" class="text-blue-400 hover:text-blue-300 transition-colors">bool</a> showFps = false;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#FPSCounterPosition" class="text-blue-400 hover:text-blue-300 transition-colors">FPSCounterPosition</a> fpsPos = <a href="nova_engine.html#FPSCounterPosition" class="text-blue-400 hover:text-blue-300 transition-colors">FPSCounterPosition</a>.TopRight;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="nova_engine.html#Text" class="text-blue-400 hover:text-blue-300 transition-colors">Text</a>* fpsText;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> currentFps = 0.0f;
+</div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<a href="https://dlang.org/spec/type.html#float" class="text-blue-400 hover:text-blue-300 transition-colors">float</a> fpsUpdateTimer = 0.0f;
+</div>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Methods</h4>
+<div class="space-y-3">
+<div id="Nova.physics" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">@property ref Physics</span> <span class="text-blue-400 font-semibold">physics</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Nova.gameObjects" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">@property ref GameObject*[]</span> <span class="text-blue-400 font-semibold">gameObjects</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Nova.particleEmitters" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">@property ref ParticleEmitter*[]</span> <span class="text-blue-400 font-semibold">particleEmitters</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Nova.loadScene" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">loadScene</span><span class="text-gray-500">(Scene scene)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Load a new scene.</p>
+</div>
+</div>
+<div id="Nova.playSound" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">playSound</span><span class="text-gray-500">(Sound* sound, int loops = 0, float volume = 0.5f)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Load a music track.</p>
+</div>
+</div>
+<div id="Nova.playMusic" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">playMusic</span><span class="text-gray-500">(Music* music, bool loop = true, float volume = 0.5f)</span>
+</div>
+</div>
+<div id="Nova.pauseMusic" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">pauseMusic</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Nova.resumeMusic" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">resumeMusic</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Nova.stopMusic" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">stopMusic</span><span class="text-gray-500">()</span>
+</div>
+</div>
+<div id="Nova.createFrame" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">SpriteFrame</span> <span class="text-blue-400 font-semibold">createFrame</span><span class="text-gray-500">(int x, int y, int width, int height, int texWidth, int texHeight)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Create a spritesheet frame.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">x</td>
+<td class="py-2 px-4 text-gray-400 align-top">X position in pixels</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">y</td>
+<td class="py-2 px-4 text-gray-400 align-top">Y position in pixels</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">width</td>
+<td class="py-2 px-4 text-gray-400 align-top">Frame width in pixels</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">height</td>
+<td class="py-2 px-4 text-gray-400 align-top">Frame height in pixels</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">texWidth</td>
+<td class="py-2 px-4 text-gray-400 align-top">Total texture width</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">texHeight</td>
+<td class="py-2 px-4 text-gray-400 align-top">Total texture height</td>
+</tr>
+</tbody></table>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> SpriteFrame with UV coordinates</div>
+</div>
+</div>
+<div id="Nova.initialize" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">initialize</span><span class="text-gray-500">(string title, int xDims = 1920, int yDims = 1080, int targetFPS = 60)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Initialize the game engine.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">title</td>
+<td class="py-2 px-4 text-gray-400 align-top">The window title</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Nova.addRigidBody" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">addRigidBody</span><span class="text-gray-500">(GameObject* obj, float mass = 1, bool isStatic = false)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Add a game object to the world as a rigid body.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">obj</td>
+<td class="py-2 px-4 text-gray-400 align-top">The object</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">mass</td>
+<td class="py-2 px-4 text-gray-400 align-top">The mass of the object</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">isStatic</td>
+<td class="py-2 px-4 text-gray-400 align-top">Whether or not it is static, defaults to false</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Nova.addCollider" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">addCollider</span><span class="text-gray-500">(GameObject* obj, Collider.Type type, Vec2 size)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Add a collider to the world.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">obj</td>
+<td class="py-2 px-4 text-gray-400 align-top">Source object</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">type</td>
+<td class="py-2 px-4 text-gray-400 align-top">Type of collider</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">size</td>
+<td class="py-2 px-4 text-gray-400 align-top">Size of object as a 2D vector</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Nova.addSprite" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">addSprite</span><span class="text-gray-500">(GameObject* obj, Texture* texture, SpriteFrame frame = SpriteFrame(0, 0, 1, 1)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Add a sprite to a game object.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">obj</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game object</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">texture</td>
+<td class="py-2 px-4 text-gray-400 align-top">The texture to use</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">frame</td>
+<td class="py-2 px-4 text-gray-400 align-top">Optional sprite frame (defaults to full texture)</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Nova.toggleFpsCounter" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">toggleFpsCounter</span><span class="text-gray-500">(FPSCounterPosition pos)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Toggle the FPS counter.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">pos</td>
+<td class="py-2 px-4 text-gray-400 align-top">The position of the FPS counter</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="Nova.drawFps" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">drawFps</span><span class="text-gray-500">(Camera cam)</span>
+</div>
+</div>
+<div id="Nova.run" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">run</span><span class="text-gray-500">()</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Run the game.</p>
+</div>
+</div>
+<div id="Nova.getInput" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">ref Input</span> <span class="text-blue-400 font-semibold">getInput</span><span class="text-gray-500">()</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Get the input state for this frame.</p>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> Reference to the input system</div>
+</div>
+</div>
+<div id="Nova.screenToWorld" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">Vec2</span> <span class="text-blue-400 font-semibold">screenToWorld</span><span class="text-gray-500">(Vec2 screenPos)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Convert screen coordinates to world coordinates.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">screenPos</td>
+<td class="py-2 px-4 text-gray-400 align-top">Position in screen coordinates (pixels)</td>
+</tr>
+</tbody></table>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> Position in world coordinates</div>
+</div>
+</div>
+<div id="Nova.worldToScreen" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">Vec2</span> <span class="text-blue-400 font-semibold">worldToScreen</span><span class="text-gray-500">(Vec2 worldPos)</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Convert world coordinates to screen coordinates.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">worldPos</td>
+<td class="py-2 px-4 text-gray-400 align-top">Position in world coordinates</td>
+</tr>
+</tbody></table>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> Position in screen coordinates (pixels)</div>
+</div>
+</div>
+<div id="Nova.cleanup" class="bg-code-bg rounded-lg p-4 border border-border-color">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold">cleanup</span><span class="text-gray-500">()</span>
+</div>
+<div class="mt-2 pl-3 border-l border-blue-500/50">
+<p class="text-gray-300 leading-relaxed">Destroy the window and clean up the underlying GLFW resources.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-card-bg rounded-xl shadow-lg border border-border-color overflow-hidden">
+<div class="p-6 space-y-6">
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="KeyEvent" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">ENUM</span>
+KeyEvent
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Common key events.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Members</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Release</span> = <span class="text-green-400">0</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Press</span> = <span class="text-green-400">1</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Repeat</span> = <span class="text-green-400">2</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Unknown</span> = <span class="text-green-400">-1</span></div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Key" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">ENUM</span>
+Key
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Common key constants.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Members</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Space</span> = <span class="text-green-400">32</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Apostrophe</span> = <span class="text-green-400">39</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Comma</span> = <span class="text-green-400">44</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Minus</span> = <span class="text-green-400">45</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Period</span> = <span class="text-green-400">46</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Slash</span> = <span class="text-green-400">47</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num0</span> = <span class="text-green-400">48</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num1</span> = <span class="text-green-400">49</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num2</span> = <span class="text-green-400">50</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num3</span> = <span class="text-green-400">51</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num4</span> = <span class="text-green-400">52</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num5</span> = <span class="text-green-400">53</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num6</span> = <span class="text-green-400">54</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num7</span> = <span class="text-green-400">55</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num8</span> = <span class="text-green-400">56</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Num9</span> = <span class="text-green-400">57</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Semicolon</span> = <span class="text-green-400">59</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Equal</span> = <span class="text-green-400">61</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">A</span> = <span class="text-green-400">65</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">B</span> = <span class="text-green-400">66</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">C</span> = <span class="text-green-400">67</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">D</span> = <span class="text-green-400">68</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">E</span> = <span class="text-green-400">69</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F</span> = <span class="text-green-400">70</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">G</span> = <span class="text-green-400">71</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">H</span> = <span class="text-green-400">72</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">I</span> = <span class="text-green-400">73</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">J</span> = <span class="text-green-400">74</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">K</span> = <span class="text-green-400">75</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">L</span> = <span class="text-green-400">76</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">M</span> = <span class="text-green-400">77</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">N</span> = <span class="text-green-400">78</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">O</span> = <span class="text-green-400">79</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">P</span> = <span class="text-green-400">80</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Q</span> = <span class="text-green-400">81</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">R</span> = <span class="text-green-400">82</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">S</span> = <span class="text-green-400">83</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">T</span> = <span class="text-green-400">84</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">U</span> = <span class="text-green-400">85</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">V</span> = <span class="text-green-400">86</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">W</span> = <span class="text-green-400">87</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">X</span> = <span class="text-green-400">88</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Y</span> = <span class="text-green-400">89</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Z</span> = <span class="text-green-400">90</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">LeftBracket</span> = <span class="text-green-400">91</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Backslash</span> = <span class="text-green-400">92</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">RightBracket</span> = <span class="text-green-400">93</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">GraveAccent</span> = <span class="text-green-400">96</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Escape</span> = <span class="text-green-400">256</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Enter</span> = <span class="text-green-400">257</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Tab</span> = <span class="text-green-400">258</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Backspace</span> = <span class="text-green-400">259</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Insert</span> = <span class="text-green-400">260</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Delete</span> = <span class="text-green-400">261</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Right</span> = <span class="text-green-400">262</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Left</span> = <span class="text-green-400">263</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Down</span> = <span class="text-green-400">264</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Up</span> = <span class="text-green-400">265</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">PageUp</span> = <span class="text-green-400">266</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">PageDown</span> = <span class="text-green-400">267</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Home</span> = <span class="text-green-400">268</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">End</span> = <span class="text-green-400">269</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">CapsLock</span> = <span class="text-green-400">280</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">ScrollLock</span> = <span class="text-green-400">281</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">NumLock</span> = <span class="text-green-400">282</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">PrintScreen</span> = <span class="text-green-400">283</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Pause</span> = <span class="text-green-400">284</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F1</span> = <span class="text-green-400">290</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F2</span> = <span class="text-green-400">291</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F3</span> = <span class="text-green-400">292</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F4</span> = <span class="text-green-400">293</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F5</span> = <span class="text-green-400">294</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F6</span> = <span class="text-green-400">295</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F7</span> = <span class="text-green-400">296</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F8</span> = <span class="text-green-400">297</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F9</span> = <span class="text-green-400">298</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F10</span> = <span class="text-green-400">299</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F11</span> = <span class="text-green-400">300</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">F12</span> = <span class="text-green-400">301</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">LeftShift</span> = <span class="text-green-400">340</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">LeftControl</span> = <span class="text-green-400">341</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">LeftAlt</span> = <span class="text-green-400">342</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">LeftSuper</span> = <span class="text-green-400">343</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">RightShift</span> = <span class="text-green-400">344</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">RightControl</span> = <span class="text-green-400">345</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">RightAlt</span> = <span class="text-green-400">346</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">RightSuper</span> = <span class="text-green-400">347</span></div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="Mouse" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">ENUM</span>
+Mouse
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">Mouse button constants.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Members</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Left</span> = <span class="text-green-400">0</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Right</span> = <span class="text-green-400">1</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Middle</span> = <span class="text-green-400">2</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Button4</span> = <span class="text-green-400">3</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Button5</span> = <span class="text-green-400">4</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Button6</span> = <span class="text-green-400">5</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Button7</span> = <span class="text-green-400">6</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Button8</span> = <span class="text-green-400">7</span></div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="FPSCounterPosition" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">ENUM</span>
+FPSCounterPosition
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">FPS Counter position.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Members</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">TopLeft</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">TopRight</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">BottomLeft</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">BottomRight</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Center</span></div>
+</div>
+</div>
+</div>
+<div class="bg-gray-800/40 rounded-lg p-6 border border-border-color hover:border-red-500/50 transition-colors">
+<h3 id="BufferBit" class="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+<span class="text-gray-500 text-sm font-normal uppercase tracking-wide">ENUM</span>
+BufferBit
+</h3>
+<div class="mb-4 pl-4 border-l-2 border-red-500/50">
+<p class="text-gray-300 leading-relaxed">OpenGL bitmask constant.</p>
+</div>
+<div class="mt-4">
+<h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Members</h4>
+<div class="space-y-2">
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Color</span> = <span class="text-green-400">0x00004000</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Depth</span> = <span class="text-green-400">0x00000100</span></div>
+<div class="bg-code-bg rounded p-3 border border-border-color font-mono text-sm text-gray-300">
+<span class="text-blue-400 font-semibold">Stencil</span> = <span class="text-green-400">0x00000400</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-card-bg rounded-xl shadow-lg border border-border-color overflow-hidden">
+<div class="p-6 space-y-4">
+<div id="pollEvents" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold text-base">pollEvents</span><span class="text-gray-500">()</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Poll for events.</p>
+</div>
+</div>
+<div id="shouldClose" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">bool</span> <span class="text-blue-400 font-semibold text-base">shouldClose</span><span class="text-gray-500">(GameWindow* gw)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Should the game window close?</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">gw</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game window.</td>
+</tr>
+</tbody></table>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> Whether or not it should close</div>
+</div>
+</div>
+<div id="getTime" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">double</span> <span class="text-blue-400 font-semibold text-base">getTime</span><span class="text-gray-500">()</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Get the current game time.</p>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> The current game time as a double.</div>
+</div>
+</div>
+<div id="getKey" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">ulong</span> <span class="text-blue-400 font-semibold text-base">getKey</span><span class="text-gray-500">(GameWindow* gw, int keyCode)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Get some keypress.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">gw</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game window.</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">keyCode</td>
+<td class="py-2 px-4 text-gray-400 align-top">The current key.</td>
+</tr>
+</tbody></table>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> GLFW_PRESS or not.</div>
+</div>
+</div>
+<div id="getMouseButton" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">ulong</span> <span class="text-blue-400 font-semibold text-base">getMouseButton</span><span class="text-gray-500">(GameWindow* gw, int mbCode)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Get some mouse button press.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">gw</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game window.</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">mbCode</td>
+<td class="py-2 px-4 text-gray-400 align-top">The current mouse button.</td>
+</tr>
+</tbody></table>
+<div class="mt-4 text-gray-300"><span class="font-bold text-gray-200">Returns:</span> GLFW_PRESS or not.</div>
+</div>
+</div>
+<div id="getCursorPosition" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold text-base">getCursorPosition</span><span class="text-gray-500">(GameWindow* window, double* x, double* y)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Get the position of the mouse cursor.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">window</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game window.</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">x</td>
+<td class="py-2 px-4 text-gray-400 align-top">X position to read the value into</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">y</td>
+<td class="py-2 px-4 text-gray-400 align-top">Y position to read the value into</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="clearColor" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold text-base">clearColor</span><span class="text-gray-500">(float r, float b, float g, float a)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Set background to some color.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">r</td>
+<td class="py-2 px-4 text-gray-400 align-top">Red</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">b</td>
+<td class="py-2 px-4 text-gray-400 align-top">Blue</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">g</td>
+<td class="py-2 px-4 text-gray-400 align-top">Green</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">a</td>
+<td class="py-2 px-4 text-gray-400 align-top">Alpha</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="clear" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold text-base">clear</span><span class="text-gray-500">(BufferBit bb)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Clear buffers to preset values.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">bb</td>
+<td class="py-2 px-4 text-gray-400 align-top">Bitfield mask</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="swapBuffers" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">void</span> <span class="text-blue-400 font-semibold text-base">swapBuffers</span><span class="text-gray-500">(GameWindow* gw)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Swap the front and back buffers of the specified window.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">gw</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game engine window</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="keyCallback" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">extern (C) void</span> <span class="text-blue-400 font-semibold text-base">keyCallback</span><span class="text-gray-500">(GLFWwindow* window, int key, int scancode, int action, int mods)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Key callback.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">window</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game engine window</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">key</td>
+<td class="py-2 px-4 text-gray-400 align-top">The key</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">scancode</td>
+<td class="py-2 px-4 text-gray-400 align-top">The scan code</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">action</td>
+<td class="py-2 px-4 text-gray-400 align-top">The action</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">mods</td>
+<td class="py-2 px-4 text-gray-400 align-top">The modifiers</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="mouseButtonCallback" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">extern (C) void</span> <span class="text-blue-400 font-semibold text-base">mouseButtonCallback</span><span class="text-gray-500">(GLFWwindow* window, int button, int action, int mods)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">Mouse button callback function.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">window</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game engine window.</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">button</td>
+<td class="py-2 px-4 text-gray-400 align-top">The button</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">action</td>
+<td class="py-2 px-4 text-gray-400 align-top">The action</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">mods</td>
+<td class="py-2 px-4 text-gray-400 align-top">The modifiers</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="cursorPosCallback" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">extern (C) void</span> <span class="text-blue-400 font-semibold text-base">cursorPosCallback</span><span class="text-gray-500">(GLFWwindow* window, double xpos, double ypos)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">The cursor position callback function.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">window</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game window</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">xpos</td>
+<td class="py-2 px-4 text-gray-400 align-top">X position of the cursor</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">ypos</td>
+<td class="py-2 px-4 text-gray-400 align-top">Y position of the cursor</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div id="scrollCallback" class="bg-gray-800/40 rounded-lg p-5 border border-border-color hover:border-red-500/50 transition-colors">
+<div class="font-mono text-sm">
+<span class="text-red-400">extern (C) void</span> <span class="text-blue-400 font-semibold text-base">scrollCallback</span><span class="text-gray-500">(GLFWwindow* window, double xoffset, double yoffset)</span>
+</div>
+<div class="pl-4 border-l-2 border-red-500/50 mt-3">
+<p class="text-gray-300 leading-relaxed">The scroll callback function.</p>
+<div class="font-bold text-gray-200 mt-4 mb-2">Params:</div>
+<table class="w-full text-left border-collapse mb-4 border border-gray-600">
+<tbody>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">window</td>
+<td class="py-2 px-4 text-gray-400 align-top">The game window</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">xoffset</td>
+<td class="py-2 px-4 text-gray-400 align-top">X offset for scroll</td>
+</tr>
+<tr class="border-b border-gray-600 last:border-0">
+<td class="py-2 px-4 border-r border-gray-600 font-mono text-blue-300 font-semibold whitespace-nowrap align-top min-w-[8rem]">yoffset</td>
+<td class="py-2 px-4 text-gray-400 align-top">Y offset for scroll</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</section>
+
+        </main>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>Generated with <a href="https://github.com/navid-m/ceres">Ceres</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('global-search');
+        const searchResults = document.getElementById('search-results');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 2) {
+                searchResults.classList.add('hidden');
+                return;
+            }
+
+            const results = searchIndex.filter(item => 
+                item.name.toLowerCase().includes(query) || 
+                (item.module && item.module.toLowerCase().includes(query))
+            ).slice(0, 10);
+
+            if (results.length > 0) {
+                searchResults.innerHTML = results.map(item => `
+                    <a href="${item.link}" class="block p-3 hover:bg-gray-800 border-b border-border-color last:border-0">
+                        <div class="text-sm font-semibold text-blue-400">${item.name}</div>
+                        <div class="text-xs text-gray-500">${item.type} ${item.module ? 'in ' + item.module : ''}</div>
+                    </a>
+                `).join('');
+                searchResults.classList.remove('hidden');
+            } else {
+                searchResults.classList.add('hidden');
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.add('hidden');
+            }
+        });
+
+        function togglePrivateElements(checkboxId, selector) {
+            const checkbox = document.getElementById(checkboxId);
+            if (!checkbox) return;
+
+            const updateVisibility = () => {
+                const elements = document.querySelectorAll(selector);
+                const show = !checkbox.checked;
+                elements.forEach(el => el.style.display = show ? '' : 'none');
+            };
+
+            checkbox.addEventListener('change', updateVisibility);
+            updateVisibility();
+        }
+
+        togglePrivateElements('hide-private-functions-checkbox', '.private-function, .private-method');
+        togglePrivateElements('hide-private-fields-checkbox', '.private-field');
+
+        function highlightSearchResult() {
+            const hash = window.location.hash;
+            document.querySelectorAll('.highlight-result').forEach(el => el.classList.remove('highlight-result'));
+            
+            if (hash) {
+                const id = hash.substring(1);
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('highlight-result');
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        window.addEventListener('hashchange', highlightSearchResult);
+        if (window.location.hash) {
+            setTimeout(highlightSearchResult, 100);
+        }
+    </script>
+</body>
+</html>
