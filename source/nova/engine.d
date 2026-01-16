@@ -1922,7 +1922,7 @@ struct Nova
             break;
         }
 
-        t.scale = Vec2(0.0015f / zoom, 0.0015f / zoom);
+        t.scale = Vec2(0.0014f / zoom, 0.0014f / zoom);
 
         renderer.drawText(t, *fpsText, cam);
     }
