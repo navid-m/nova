@@ -1871,7 +1871,7 @@ struct Nova
     }
 
     /** 
-     * Draw the FPS statistics.
+     * Draw the FPS statistic.
      *
      * Params:
      *   cam = The camera
