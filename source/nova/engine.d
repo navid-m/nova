@@ -1886,7 +1886,6 @@ struct Nova
         float aspect = NovaConfiguration.xDims / NovaConfiguration.yDims;
         float halfWidth = aspect / zoom;
         float halfHeight = 1.0f / zoom;
-
         float x = cam.position.x;
         float y = cam.position.y;
 
