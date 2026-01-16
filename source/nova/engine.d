@@ -1494,6 +1494,14 @@ struct Nova
         return music;
     }
 
+    /** 
+     * Play some sound.
+     *
+     * Params:
+     *   sound = The sound to play as a Sound object.
+     *   loops = The amount of times to loop the sound
+     *   volume = The volume of the sound, defaults to 0.5
+     */
     void playSound(Sound* sound, int loops = 0, float volume = 0.5f)
     {
         if (sound && sound.chunk)
@@ -1504,6 +1512,14 @@ struct Nova
         }
     }
 
+    /** 
+     * Play some music.
+     *
+     * Params:
+     *   music = The music to play as a Music object
+     *   loop = Whether or not to loop
+     *   volume = The volume of the music, defaults to 0.5
+     */
     void playMusic(Music* music, bool loop = true, float volume = 0.5f)
     {
         if (music && music.music)
