@@ -1870,6 +1870,12 @@ struct Nova
         }
     }
 
+    /** 
+     * Draw the FPS statistics.
+     *
+     * Params:
+     *   cam = The camera
+     */
     void drawFps(Camera cam)
     {
         if (!showFps || loadedFonts.length == 0)
