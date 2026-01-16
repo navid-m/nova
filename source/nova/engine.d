@@ -1004,6 +1004,14 @@ struct Renderer
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
 
+    /** 
+     * Draw some text.
+     *
+     * Params:
+     *   t = Transformation
+     *   txt = The text to draw as a text object
+     *   cam = The camera
+     */
     void drawText(Transform t, Text txt, Camera cam)
     {
         if (!txt.font)
