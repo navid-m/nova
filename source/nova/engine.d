@@ -1880,6 +1880,8 @@ struct Nova
 
         fpsText.content = format("FPS: %d", cast(int) currentFps);
 
+        static immutable float yOffset = 0.05;
+
         float zoom = cam.zoom;
         float aspect = NovaConfiguration.xDims / NovaConfiguration.yDims;
         float halfWidth = aspect / zoom;
@@ -1898,13 +1900,15 @@ struct Nova
                     y + halfHeight - margin);
             break;
         case FPSCounterPosition.TopRight:
-            t.position = Vec2(x + halfWidth - margin - 0.3f / zoom, y + halfHeight - margin);
+            t.position = Vec2(x + halfWidth - margin - 0.3f / zoom,
+                    y + halfHeight - margin - yOffset);
             break;
         case FPSCounterPosition.BottomLeft:
-            t.position = Vec2(x - halfWidth + margin, y - halfHeight + margin);
+            t.position = Vec2(x - halfWidth + margin, y - halfHeight + margin - yOffset);
             break;
         case FPSCounterPosition.BottomRight:
-            t.position = Vec2(x + halfWidth - margin - 0.3f / zoom, y - halfHeight + margin);
+            t.position = Vec2(x + halfWidth - margin - 0.3f / zoom, y - halfHeight + margin
+                    - yOffset);
             break;
         case FPSCounterPosition.Center:
             t.position = Vec2(x, y);
